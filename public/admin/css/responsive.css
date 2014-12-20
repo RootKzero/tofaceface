@@ -1,0 +1,62 @@
+﻿@charset "utf-8";
+/*== CSS Document ==*/
+/*==================== RESPONSIVE DESIGN 320 ====================*/
+@media only screen and ( max-width: 320px ) {
+	.info_data {
+		width: 50%;
+	}
+	#form_reply_post > textarea {
+		width: 80.665%;
+	}
+	
+	#form_post > textarea {
+		width: 73.665%;
+	}
+	
+}
+/*==================== RESPONSIVE DESIGN 600 ====================*/
+@media only screen and ( max-width: 600px ) {
+	.list_data_2 li {
+		margin-right: 2px;
+	}
+	.user_data  {
+		padding-top: 180px;
+	}
+}
+/*==================== RESPONSIVE DESIGN 768px ====================*/
+@media only screen and ( max-width: 768px ) {
+	.maps_img,
+	.img_post {
+		width: 100%;
+	}
+}
+/*==================== RESPONSIVE DESIGN 600px - 1024px - 767px ====================*/
+@media only screen 
+and ( max-device-width: 600px ), 
+only screen and ( device-width: 1024px ) and (device-height: 600px ),
+only screen and ( device-width: 600px ), 
+only screen and ( max-width: 767px ) {
+	.left_col, 
+	.right_col,
+	.maps_img,
+	.img_post,
+	.avatar_post > img {
+		width: 100%;
+	}
+	.navigation {
+		display: none;
+	}
+	.navigation_responsive {
+		display: inline-block; 
+	}
+	.follow_button,
+	.options_user_button {
+		/*bottom: 150px;*/
+	} 
+	.wrapper_top {
+		position: relative;
+	}
+	.wrap_cover {
+		padding-top: 0;
+	}
+}

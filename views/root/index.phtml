@@ -1,0 +1,79 @@
+<?php
+session_start();
+##### ERROR 0
+//error_reporting(E_ALL);
+$idPage  = $_GET['id'];
+
+
+if( !isset( $_SESSION['id_admon'] ) ) {
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+    <base href="<?php echo URL_BASE ?>" target="_top" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+
+    <title><?php echo $this->title; ?></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="<?php echo URL_BASE; ?>public/admin/css/bootstrap.css" rel="stylesheet">
+	
+	<!-- Main styles -->
+    <link href="<?php echo URL_BASE; ?>public/admin/css/main.css" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="<?php echo URL_BASE; ?>public/admin/css/tables.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo URL_BASE; ?>public/admin/css/layout.css"/>
+    <script type="text/javascript" src="<?php echo $_layoutParams['root_js']; ?>modernizr.custom.js"></script>
+    <link rel="shortcut icon" href="<?php echo $_layoutParams['root_img']; ?>favicon.ico" />
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/boostrap/html5shiv.js"></script>
+      <script src="js/boostrap/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+	<body id="no_logging">
+		
+	<div class="container">
+		<div class="form_login">
+			
+			<div class="alert alert-danger" id="error"></div>
+			
+			<form action="" method="post" id="access">
+				
+				<div class="form-group no_session">
+				<label for="usr"><i class="glyphicon glyphicon-user"></i> User:</label><br />
+				<input type="text" class="form-control" value="" size="15" name="usr" id="usr" /><br />
+                 </div>
+                 
+                 <div class="form-group no_session">
+                 <label for="password"><i class="glyphicon glyphicon-lock"></i> Password:</label><br />
+                 <input type="password" class="form-control" id="pass" value="" size="15" name="pass" /><br />
+                 </div>
+                 
+                 <button type="submit" name="submit" id="buttonLogin" class="btn btn-block btn-lg btn-primary bt_login">
+                 	Log in <i class="glyphicon glyphicon-log-in"></i>
+                 </button>
+                 </form>
+	</div>
+	</div>
+		
+		
+		
+
+<script src="<?php echo $_layoutParams['root_js']; ?>jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="<?php echo URL_BASE; ?>public/admin/js/login.js"></script>
+<script src="<?php echo URL_BASE; ?>public/admin/js/boostrap/bootstrap.min.js"></script>
+
+ </body>
+</html>
+<?php
+		} else {
+			 include( '_views/controller.php' ); 
+		}
+		?>

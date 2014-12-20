@@ -1,0 +1,737 @@
+<?php 
+//<--- * User * ---> 
+$count = count( $this->data );
+
+//<--- * Last Photos And Videos * --->
+$countPhotosVideos = count( $this->lastPhotosVideos );
+
+if( isset( $this->data ) &&  $count != 0 && $this->checkBlocked[0]['status'] != 1 ) :
+			
+//<-- Posts
+$countPost = count( $this->posts );
+
+//<<-- Favorites
+$countFavs = count( $this->postsFavs );
+
+//<<<-- Followers
+$countFollowers = count( $this->_getFollowers );
+
+//<<<-- Following
+$countFollowing = count( $this->_getFollowing );
+
+//<<<<- * USER BLOCK * --->>>
+//<<<-- Following
+$countBlock = count( $this->checkBlock );
+
+if( $countBlock == 1 && $this->checkBlock[0]['status'] == 1 ) {
+	$user_bloqueado = $_SESSION['LANG']['unlock_user'];
+} else {
+	$user_bloqueado = $_SESSION['LANG']['block_user'];
+}
+//<<<--- * Count Data * --->>>
+if( $_GET['action'] == 'favorites' ) {
+	$countData = $countFavs;
+} else if( $_GET['action'] == 'followers' ) {
+	$countData = $countFollowers;
+} else if( $_GET['action'] == 'following' ) {
+	$countData = $countFollowing;
+} else {
+	$countData = $countPost;
+}
+//<<<--- * Action Url * --->>>
+if( isset( $_GET['action'] ) ) {
+	$actionUrl = '/'.$_GET['action'];
+}
+
+/*
+ * **************
+ *  HEADER
+ * **************
+ */
+include 'views/inc/header.php'; ?>
+<link rel="canonical" href="<?php echo URL_BASE.$this->info->username.$actionUrl ?>">
+<style>
+	
+	body {
+		background-position: <?php echo $this->info->bg_position; ?> 55px;
+		background-attachment: <?php echo $this->info->bg_attachment; ?>;
+		
+		<?php if( $this->info->bg_attachment == 'fixed' ): ?>
+		background-repeat: repeat repeat; 
+		<?php else: ?>
+		background-repeat: no-repeat; 
+		<?php endif; ?>
+		
+		background-color: <?php echo $this->info->bg_color; ?>;
+		
+		<?php if( $this->info->bg != '' ): ?>
+		background-image: url(<?php echo URL_BASE.'public/backgrounds/'.$this->info->bg; ?>);
+		<?php endif; ?>
+	}
+	
+	body a,
+	body a:hover { color: <?php echo $this->info->color_link; ?>; }
+	.icons { background-color: <?php echo $this->info->color_link; ?>;}
+	.container_data_profile a:hover span{ color: <?php echo $this->info->color_link; ?>;  }
+	
+	/* PopOut Message User */
+	#container_popout_message { display: none; width: 100%; height: 100%; background: #000; opacity: 0.8; position: fixed; z-index: 9999;  }
+	.popoutUser_message     { top: 20%; -webkit-box-shadow: 0 0 10px #1F1E1E; box-shadow: 0 0 10px #1F1E1E; display: none; max-width: 550px; padding: 0; background:#F8F8F8; color: #999; font-size: 12px; 
+	border-radius: 4px; -webkit-border-radius: 4px; position: fixed;  z-index: 10000; overflow: hidden; width: 80.857%; text-align: center; font-weight: bold; }
+	/* top: 20%; */
+	.wrap_popout_message { width: 100%; overflow: hidden; display: block; }
+	.title_popout_message { -webkit-box-shadow: inset 0 -10px 20px #F3F3F3; box-shadow: inset 0 -10px 20px #F3F3F3; background: #ececec; color: #333; border-bottom: 1px solid #DDD; height: 35px; }
+	.close_popout_message { position: absolute; right: 0; opacity: 0.7; width: 22px; height: 22px; margin-top: 5px; margin-right: 10px; background : url('<?php echo $_layoutParams['root_img']; ?>close.png') no-repeat; float: right; cursor: pointer;  }
+	.close_popout_message:hover { opacity: 1; }
+	.content_user_message {  width: 100%; float: left; padding: 0 0 10px 0; }
+	.textPopout_message { width: 100%; font-size: 12px; color: #414141; float: left; display: block; padding: 0; line-height: 35px; }
+
+
+	
+</style>
+<link href="<?php echo $_layoutParams['root_css']; ?>colorbox.css" rel="stylesheet" />
+<link href="<?php echo $_layoutParams['root_css']; ?>jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+</head>
+<!-- Body -->
+<body data-max="<?php echo MAX_LENGTH; ?>" data-accept="<?php echo $_SESSION['LANG']['accept']; ?>" data-cancel="<?php echo $_SESSION['LANG']['cancel']; ?>">
+		<?php include 'views/inc/profile_summary_inc.php'; ?>
+		
+		<!-- PopOut Message User -->
+	<div id="container_popout_message"></div>
+		<div class="popoutUser_message" id="content_popout_message">
+			<div class="wrap_popout_message">
+				<div class="title_popout_message">
+					<span class="textPopout_message"></span>
+					<div class="close_popout_message"></div>
+				</div>
+				<div class="content_user_message">
+				</div><!-- content user -->
+			</div><!-- wrap popout -->
+		</div>
+	<!-- Message user -->
+	
+		<!-- warpper_top_bar -->
+		<div class="warpper_top_bar">
+				<!-- inner_top_bar -->
+				<header class="inner_top_bar">
+					<!-- padding_class -->
+					<div class="padding_class">
+						<a href="<?php echo URL_BASE; ?>">
+							<?php include 'views/inc/logo.php'; ?>
+						</a>
+					
+					<?php include 'views/inc/navigation.php'; ?>
+			    </div><!-- padding_class -->
+			</header><!-- inner_top_bar -->
+		</div><!-- warpper_top_bar -->
+	
+	<!-- page -->
+	<div class="page">
+		<!-- layout -->
+		<section class="layout session">
+			<div class="popout"></div>
+			
+			<!-- padding_class -->
+		    <div class="padding_class sessionClass">
+		    	
+		    	<div class="formSearchResp">
+						   <form action="search/" class="formResponsive" method="get" id="search_engine" accept-charset="UTF-8">
+							  <input id="btnItems" name="q" class="mention" type="text" placeholder="<?php echo $_SESSION['LANG']['search_word']; ?>" maxlength="100">	
+						      </form>
+					</div>
+					
+		    	<!-- cover_user -->
+		    	<div class="cover_user" <?php if( $this->info->cover_image != '' ) : ?> style=" background: url(<?php echo URL_BASE.'public/cover/'.$this->info->cover_image; endif; ?>) 
+		    		center center no-repeat #111 ;">
+		    		
+		    		<?php if( $this->info->cover_image != '' ) : ?>
+		    		<a data-url="" class="galeryAjax linkCoverLarge" href="<?php echo URL_BASE.'public/cover/large_'.$this->info->cover_image; ?>"></a>
+		    		<?php endif;
+		    	 
+		    		if( isset( $_SESSION['authenticated'] ) ): 
+		    			
+						if( $_SESSION['authenticated'] != $this->info->id && $this->checkBlock[0]['status'] == 0  ):
+							?>
+							
+							<?php if ( $this->followingActive->status == 1 ): ?>	
+		    		   		 <span data-username="<?php echo $this->info->username; ?>" 
+		    		   		 	data-id="<?php echo _Function::randomString( 10, FALSE, TRUE, FALSE ).'-'.$this->info->id; ?>" 
+		    		   		 	data-follow="<?php echo $_SESSION['LANG']['follow']; ?>" 
+		    					data-unfollow="<?php echo $_SESSION['LANG']['unfollow']; ?>" 
+		    					data-following="<?php echo $_SESSION['LANG']['following']; ?>" 
+		    		   		 	class="followBtn follow_button follow_active"><?php echo $_SESSION['LANG']['following']; ?></span>
+		    				<?php else: ?>
+		    				<span data-username="<?php echo $this->info->username; ?>" 
+		    					data-id="<?php echo _Function::randomString( 10, FALSE, TRUE, FALSE ).'-'.$this->info->id; ?>" 
+		    					data-follow="<?php echo $_SESSION['LANG']['follow']; ?>" 
+		    					data-unfollow="<?php echo $_SESSION['LANG']['unfollow']; ?>" 
+		    					data-following="<?php echo $_SESSION['LANG']['following']; ?>" 
+		    					class="followBtn follow_button"><?php echo $_SESSION['LANG']['follow']; ?></span>
+		    					
+							<?php endif; //<--- $this->followingActive->status ?>
+						<?php endif; //<---  $_SESSION['authenticated'] != $this->info->id ?>
+		    		
+		    		<?php else: ?>
+		    		<span class="follow_button toogle"><?php echo $_SESSION['LANG']['follow']; ?></span>
+		    		<?php endif; //<---- $_SESSION['authenticated'] ?>
+
+
+		    		<?php if( isset( $_SESSION['authenticated'] ) ): ?>
+		    		
+		    		<?php if( $_SESSION['authenticated'] != $this->info->id ): ?>
+		    		<!--  SETTINGS USER -->
+		    		<div class="settings_user">
+		    			<div class="icoSettings">
+		    				<div id="boxSettings">
+		    					<i class="arrowUp"></i>
+		    				<ul class="options_toogle optionsUser options">
+		    					<li>
+		    						<a class="report_user_spam" data-id="<?php echo $this->info->id; ?>"><?php echo $_SESSION['LANG']['report_user']; ?></a>
+		    					</li>
+		    					<li>
+		    						<a class="block_user_id" data-id="<?php echo $this->info->id; ?>"><?php echo $user_bloqueado; ?></a>
+		    					</li>
+		    					<?php if( $this->info->messages_private == 0 || $this->info->messages_private == 1 && $this->followActive->status == 1 ): ?>
+		    					<li>
+		    						<a class="sendMessage" data-error="<?php echo $_SESSION['LANG']['error']; ?>" data-send="<?php echo $_SESSION['LANG']['send_message']; ?>" data-id="<?php echo $this->info->id; ?>" data-wait="<?php echo $_SESSION['LANG']['sending']; ?>" data-success="<?php echo $_SESSION['LANG']['submitted_successfully']; ?>" data-username="<?php echo $this->info->username; ?>">
+		    							<?php echo $_SESSION['LANG']['send_message_private']; ?>
+		    						</a>
+		    					</li>
+		    				<?php endif; ?>
+		    				</ul>
+		    				</div><!-- BOX -->
+		    			</div><!-- icoSettings -->
+		    		</div>
+		    		<?php endif;//<--- USER NOW ?>
+		    		<?php
+				else: ?>
+				<!--  SETTINGS USER -->
+		    		<div class="settings_user">
+		    			<div class="icoSettings">
+		    				<div id="boxSettings">
+		    					<i class="arrowUp"></i>
+		    				<ul class="options_toogle optionsUser toogle">
+		    					<li>
+		    						<a><?php echo $_SESSION['LANG']['report_user']; ?></a>
+		    					</li>
+		    					<li>
+		    						<a><?php echo $_SESSION['LANG']['block_user']; ?></a>
+		    					</li>
+		    					<li>
+		    						<a><?php echo $_SESSION['LANG']['send_message_private']; ?></a>
+		    					</li>
+		    				</ul>
+		    				</div><!-- BOX -->
+		    			</div><!-- icoSettings -->
+		    		</div>
+				
+				<?php endif; ?>
+		    		
+		    		<?php if( $_SESSION['authenticated'] == $this->info->id ): ?>
+		    		<!--  SETTINGS USER -->
+		    		<div class="settings_user">
+		    			<div class="icoSettings">
+		    				<div id="boxSettings">
+		    					<i class="arrowUp"></i>
+		    				<ul class="options_toogle optionsUser options">
+		    					<li><a href="<?php echo URL_BASE; ?>profile/"><?php echo $_SESSION['LANG']['edit_profile']; ?></a></li>
+		    					<li><a href="<?php echo URL_BASE; ?>settings/"><?php echo $_SESSION['LANG']['settings']; ?></a></li>
+		    					<li><a href="<?php echo URL_BASE; ?>design/"><?php echo $_SESSION['LANG']['design']; ?></a></li>
+		    				</ul>
+		    				</div><!-- BOX -->
+		    			</div><!-- icoSettings -->
+		    		</div>
+		    		<?php endif;//<--- USER NOW ?>
+		    	</div><!-- cover_user -->
+		    	
+    <!-- wrapper_grid -->
+     <div class="wrapper_grid floatLeft">
+	
+	<?php  if( Session::get( 'authenticated' ) && $_SESSION['authenticated'] != $this->info->id ) : ?>		
+		 <!-- Grid 1 -->
+	   <div class="grid_1">
+	   		<!-- container_grid -->
+	   		<div class="container_grid">
+				<div id="grid_post">
+						<span class="grid_title_small"><strong><?php echo $_SESSION['LANG']['post_to']; ?> @<?php echo $this->info->username; ?></strong></span>
+				   	<form style="border: none;" action="<?php echo URL_BASE; ?>public/ajax/upload.php" method="post" accept-charset="UTF-8" id="form_add_post" enctype="multipart/form-data">
+					   <textarea name="add_post" class="post_add" id="add_post">@<?php echo $this->info->username; ?> </textarea>
+						  <button data-title="<?php echo $_SESSION['LANG']['published_successfully']; ?>" id="button_add" class="post-user-profile" disabled="disabled" style="opacity: 0.5; cursor: default;" type="submit">
+						  	<?php echo $_SESSION['LANG']['send']; ?>
+						  	</button>
+						    <input type="hidden" name="photoId" value="" id="photoId" />
+						    
+						    <div class="wrapper_media">
+						    		<input type="file" id="upload" title="<?php echo $_SESSION['LANG']['upload_image']; ?>" class="typeFile" name="photo" accept="image/*" />
+									<div class="video_post" title="<?php echo $_SESSION['LANG']['add_video']; ?>"></div>
+								   <div class="song_post" title="<?php echo $_SESSION['LANG']['add_song']; ?>"></div>
+								</div><!-- wrapper_media -->
+							
+							
+							<div id="counter"></div>
+							<input type="text" name="video_link" id="video_link" placeholder="<?php echo $_SESSION['LANG']['link_videos']; ?>" value="" />
+							<input type="text" name="song_link" id="song_link" placeholder="<?php echo $_SESSION['LANG']['link_song']; ?>" value="" />
+						</form><!-- form -->
+						
+						<!-- Wrapper Preview -->
+						<div id="wrapper_preview">
+							<div id="container_preview">
+							</div>
+						</div><!-- Wrapper Preview -->
+				 </div><!-- grid_post  -->	  
+		    </div><!-- container_grid -->
+		</div><!-- Grid 1  --> 
+   <?php endif;//<--- Post to @Username ?>
+   
+   
+       <?php  if( Session::get( 'authenticated' ) && $_SESSION['authenticated'] == $this->info->id && empty( $_GET['action'] ) ) : ?>	   	
+		 <!-- Grid 1 -->
+	   <div class="grid_1">
+	   		<!-- container_grid -->
+	   		<div class="container_grid">
+			 <div id="grid_post">
+			 	<span class="grid_title_small">
+			 		<?php echo $_SESSION['LANG']['what_new']; ?>
+			 	</span>
+			   	<form style="border: none;" action="<?php echo URL_BASE; ?>public/ajax/upload.php" method="post" accept-charset="UTF-8" id="form_add_post" enctype="multipart/form-data">
+				   <textarea name="add_post" class="post_add" id="add_post"></textarea>
+					  <button id="button_add" disabled="disabled" style="opacity: 0.5; cursor: default;" type="submit"><?php echo $_SESSION['LANG']['send']; ?></button>
+					    <input type="hidden" name="photoId" value="" id="photoId" />
+					   
+					    <div class="wrapper_media">
+						    		<input type="file" id="upload" title="<?php echo $_SESSION['LANG']['upload_image']; ?>" class="typeFile" name="photo" accept="image/*" />
+									<div class="video_post" title="<?php echo $_SESSION['LANG']['add_video']; ?>"></div>
+								   <div class="song_post" title="<?php echo $_SESSION['LANG']['add_song']; ?>"></div>
+								</div><!-- wrapper_media -->
+							
+						<div data-max="140" id="counter"></div>
+						<input type="text" name="video_link" id="video_link" placeholder="<?php echo $_SESSION['LANG']['link_videos']; ?>" value="" />
+						<input type="text" name="song_link" id="song_link" placeholder="<?php echo $_SESSION['LANG']['link_song']; ?>" value="" />
+					</form><!-- form -->
+					
+					<!-- Wrapper Preview -->
+					<div id="wrapper_preview">
+						<div id="container_preview">
+						</div>
+					</div><!-- Wrapper Preview -->
+			    </div><!-- grid_post  -->	  
+		    </div><!-- container_grid -->
+		    
+		    
+		</div><!-- Grid 1  --> 
+			 <?php  endif; //<-------- POST NORMAL	
+				   
+if( $this->info->mode == 0 && $this->followingActive->status == 0 && $_SESSION['authenticated'] != $this->info->id ):
+		
+	else:
+	     if( $countPhotosVideos != 0 ) : ?>
+		   <!-- Grid 1 -->
+		   <div class="grid_1">
+		   		<!-- container_grid -->
+		   		<div class="container_grid">
+				   			<span class="grid_title_small"><?php echo $_SESSION['LANG']['photos_videos']; ?> 
+				   				<a href="<?php echo URL_BASE.$this->info->username; ?>/media" class="floatRight">
+				   					<?php echo $_SESSION['LANG']['view_media']; ?>  &rarr;
+				   					</a>
+				   				</span>
+		<ul class="media_profile">
+			<?php 
+			foreach ( $this->lastPhotosVideos as $key ) {
+				
+				++$num;
+				if( $num % 3 ) {
+					$style = null;
+				} else {
+					 $style = ' class="last"';
+				}
+				/* Url */
+				$urlStatus = URL_BASE.$this->info->username.'/status/'.$key['id'];
+				
+			if( $key['photo'] != '' ) {
+					$img       = '<img src="'.URL_BASE.'thumb_fixed/90-90-upload/'.$key['photo'].'" />';
+					$url       = 'href="'.URL_BASE.'upload/'.$key['photo'].'"';
+					$lightbox  = 'rel="lightbox[photos]"';
+					$spanVideo = null;
+					$title     = null;
+					$typeMedia = 'media_galery';
+					
+				} else if( $key['url_soundcloud'] != '' ) {
+					$img       = '<img width="90" height="90" src="'.$key['thumbnail_song'].'" />';
+					$url       = 'href="https://w.soundcloud.com/player/?url='.$key['url_soundcloud'].'"';
+					$lightbox  = null;
+					$target    = 'target="_blank"';
+					$spanVideo = '<span class="soundCloud"></span>';
+					$title     = null;
+					$typeMedia = 'soundcloud media_galery';
+					
+				} else {
+						if( $key['video_site'] == 'youtube' ) {
+							$key['video_url'] = 'http://www.youtube.com/v/'.$key['video_code'].'?rel=0&wmode=transparent'; 
+							
+						} else {
+							$key['video_url'] = 'http://player.vimeo.com/video/'.$key['video_code'].'';
+						}
+							$img       = '<img style="left: -20px; position: relative;" width="120" src="'.$key['video_thumbnail'].'" />';
+							$url       = 'href="'.$key['video_url'].'"';
+							$lightbox  = null;
+							$target    = 'target="_blank"';
+							$spanVideo = '<span class="video_'.$key['video_site'].'"></span>';
+							$title     = null;
+							$typeMedia = $key['video_site'].' media_galery';
+				}
+				?>
+									   
+				<li<?php echo $style; ?>>
+   					<a data-view="<?php echo $_SESSION['LANG']['details']; ?> &rarr;" data-url="<?php echo $urlStatus; ?>" class="<?php echo $typeMedia; ?>" title="<?php echo $title; ?>" <?php echo $url; ?> <?php echo $target; ?>>
+   						<?php echo $spanVideo; ?>
+						<?php echo $img; ?>
+						</a>
+   				</li>
+					   <?php
+				   }//<--- FOREACH ?>
+
+				  </ul>
+			   </a>
+		   </div><!-- container_grid -->
+		</div><!-- Grid 1 Last Photos -->
+				   <?php endif;//<<<--- != 0 ?>
+			<?php endif;//<<<--- Private or Public ?>
+				   
+				   
+				<?php 
+				
+				//<---- * advertising * --->
+				   include 'views/inc/advertising.php';
+				   
+				   if( Session::get( 'authenticated' ) ) :
+					   //<---- * who_follow * --->
+				      include 'views/inc/who_to_follow.php';
+					   endif;
+				   
+				   //<---- * trending * --->
+				   include 'views/inc/trending.php'; 
+				    ?>
+				   
+				    <!-- Grid 1 -->
+				   <div class="grid_1">
+				   		<!-- container_grid -->
+				   		<div class="container_grid about_pages">
+				   			<?php include 'views/inc/footer_session.php'; ?>
+				   		</div><!-- container_grid -->
+				   </div><!-- Grid 1 -->
+				   
+			   </div><!-- wrapper_grid -->
+			   
+			   
+			   <!-- Grid 2 -->
+			   <div class="grid_2 floatRight">
+			   	<!-- nav_profile -->
+		    	<div class="grid_profile">
+		    		<!-- container_profile -->
+				   		<div class="container_profile">
+				   			<?php if( file_exists( 'public/avatar/large_'.$this->info->avatar ) ) : ?>
+				   			<a data-url="" href="<?php echo URL_BASE.'public/avatar/large_'.$this->info->avatar; ?>" class="galeryAvatar">
+				   				<img src="<?php echo URL_BASE.'public/avatar/'.$this->info->avatar; ?>"  class="avatar_large" />
+				   			</a>
+				   			<?php
+                       else:
+						   ?>
+						   <img src="<?php echo URL_BASE.'public/avatar/'.$this->info->avatar; ?>"  class="avatar_large" />
+						   <?php
+				   			 endif;//<<--- File Exists ?>
+				   					
+				   			<!-- profile detail -->
+					   			<div class="profile_detail">
+					   				<span class="detail_top" >
+					   					<h1><?php echo stripslashes( $this->info->name ); ?></h1> 
+					   					
+					   					<?php if( $this->info->type_account == '1' ): ?>
+					   					<img title="<?php echo $_SESSION['LANG']['verified']; ?>" class="verified_img west" src="<?php echo URL_BASE; ?>public/img/verified.png"> 
+					   					<?php endif; ?>
+					   					
+					   					<strong>@<?php echo $this->info->username; ?></strong> 
+					   					<?php if( $this->followActive->status == 1 ): ?>
+					   					<span class="isFollow"><?php echo $_SESSION['LANG']['follows_you']; ?></span>
+					   					<?php endif;?>
+					   				</span><!-- detail_top -->
+					   				
+					   				<ul class="user_data">
+					   					<li>
+					   						<span class="container_data_profile grid_first">
+					   							<a href="<?php echo URL_BASE.$this->info->username; ?>">
+					   							<span class="countData"><?php echo _Function::formatNumber( $countPost ); ?></span>
+					   							<span class="title_data"><?php echo $_SESSION['LANG']['posts']; ?></span>
+					   							</a>
+					   						</span>
+					   					</li>
+					   					
+					   					<li>
+					   						<span class="container_data_profile">
+					   							<a href="<?php echo URL_BASE.$this->info->username.'/followers'; ?>">
+					   							<span class="countData"><?php echo _Function::formatNumber( $this->info->totalFollowers ); ?></span>
+					   							<span class="title_data"><?php echo $_SESSION['LANG']['followers']; ?></span>
+					   							</a>
+					   						</span>
+					   					</li>
+					   					
+					   					<li>
+					   						<span class="container_data_profile">
+					   							<a href="<?php echo URL_BASE.$this->info->username.'/following'; ?>">
+					   								<span class="countData"><?php echo _Function::formatNumber( $this->info->totalFollowing ); ?></span>
+				   									<span class="title_data"><?php echo $_SESSION['LANG']['following']; ?></span>
+					   							</a>
+					   							
+					   						</span>
+					   					</li>
+					   					
+					   					<li class="last_li">
+					   						<span class="container_data_profile">
+					   							<a href="<?php echo URL_BASE.$this->info->username.'/favorites'; ?>">
+					   							<span class="countData"><?php echo _Function::formatNumber( $countFavs ); ?></span>
+					   							<span class="title_data"><?php echo $_SESSION['LANG']['favorites']; ?></span>
+					   							</a>
+					   						</span>
+					   					</li>
+					   				</ul><!-- user_data -->
+					   			
+					   				
+					   			</div><!-- profile_detail -->
+					   			
+					   			<?php if( $this->info->bio != '' ) : 
+								
+					   				$styleP = ' style="margin: 0; border: none; padding: 0;"';
+									
+					   				?>
+					   				<p class="about_user">
+					   				 <?php echo _Function::CheckText( $this->info->bio ); ?>
+					   				</p>
+					   				<?php
+								else:
+									
+									$styleP = null;
+									
+					   				 endif; ?>
+					   				
+					   				<?php if( $this->info->location != '' || $this->info->website != '' ) : ?>
+					   					<?php 
+					   					
+					   					if( $this->info->location != '' && $this->info->website != '' ) : 
+											 $separator = ' - ';
+											endif;
+					   						?>
+					   				 <p class="about_user"<?php echo $styleP; ?>>
+					   				 <?php echo stripslashes( htmlspecialchars( $this->info->location ) ) . $separator; ?> <?php echo _Function::linkText( $this->info->website ); ?>
+					   				</p>
+					   				<?php endif; ?>
+					   				
+				   			</div><!-- container_profile -->
+		    	</div><!-- nav_profile -->
+			 
+    			    <h4 class="titleBar"><?php echo $this->titleH4; ?></h4>
+    			    
+			   	<ul class="posts">
+			   		<div id="container-loader">
+			   			<div class="loading-bar"></div>
+			   		</div>
+			   	</ul><!-- UL POST -->
+
+		</div><!-- Grid 2 -->
+			   		
+			 </div><!-- padding_class -->
+		</section><!-- layout -->
+	</div><!-- page -->
+
+		<div class="modal">
+		<div id="content_modal">
+		</div>
+	</div>
+	
+   
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery-1.7.1.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.easing.1.3.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.placeholder.1.1.1.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery-ui-1.8.17.custom.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>functions.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>count.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>add.post.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.form.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>timeago/jqueryTimeago_<?php echo $_SESSION['lang']; ?>.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.colorbox.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.scroll.user.js"></script>
+   
+   <?php if( !Session::get( 'authenticated' ) ) : ?>
+   <script src="<?php echo $_layoutParams['root_js']; ?>login.sign.up.js"></script>
+   <?php endif; ?>
+ 
+ <?php if( Session::get( 'authenticated' ) 
+ 		&& $_GET['action'] == '' 
+ 		|| Session::get( 'authenticated' )
+		&& $_SESSION['authenticated'] != $this->info->id  ) : ?>
+ <script src="<?php echo $_layoutParams['root_js']; ?>mentions.js"></script>
+ <?php endif; ?>
+ 	 
+ <script type="text/javascript">
+ 
+
+ $(".media_galery").colorbox({
+   	rel:'galery'
+   	});
+   	$(".youtube").colorbox({iframe:true, innerWidth:640, innerHeight:390});
+	$(".vimeo").colorbox({iframe:true, innerWidth:500, innerHeight:409});
+	$(".soundcloud").colorbox({iframe:true, innerWidth:500, innerHeight:160, height: false });
+				
+				
+   	$(".galeryAjax").colorbox({
+   		imgError : '<?php echo $_SESSION['LANG']['image_error']; ?>'
+   	});
+   	
+   	$(".galeryAvatar").colorbox({
+   		height: '100%',
+   		imgError : '<?php echo $_SESSION['LANG']['image_error']; ?>'
+   	});
+   
+    
+   $('.posts').scrollPagination({
+		nop     : 10, 
+		offset  : 0, 
+		error   : '',
+		delay   : 500, 
+		               
+		scroll  : true, 
+		query   : 0,
+		file    :'<?php echo $this->_file; ?>',
+		_userId : <?php echo $this->info->id; ?>,
+		totalGlobal :  <?php echo $countData; ?>
+	});
+	
+   jQuery(document).ready(function($) {
+   
+   $('#top').live('click',function()
+   {
+   	$('body,html').animate({ scrollTop: 0
+	}, 800);
+   });
+	
+	//=== PLACEHOLDER	
+  $(function(){
+      $(':input[placeholder]').placeholder();
+    });
+   //====== TIME AGO
+	
+<?php if( Session::get( 'authenticated' ) ) : ?>
+  
+		
+		$('#reply_post').live('hover', function(){
+		if ($(this).data('hascharcount') == undefined) {
+			$(this).data('hascharcount', true).charCount({ allowed: <?php echo MAX_LENGTH; ?>, warning: 10 });
+		}
+		});
+		
+		$('#message').live('hover', function(){
+		if ($(this).data('hascharcount') == undefined) {
+			$(this).data('hascharcount', true).charCount({ allowed: <?php echo MAX_LENGTH; ?>, warning: 10 });
+		}
+		});
+     
+     //================  * COUNTER * =============//
+   $('#add_post').live('hover', function(){
+		if ($(this).data('hascharcount') == undefined ) {
+			$(this).data('hascharcount', true).charCount({ allowed: <?php echo MAX_LENGTH; ?>, warning: 10, css: 'counter_2' });
+		}
+		});
+
+		
+    //=================== * UPLOAD  * ===============//
+    $('#upload').live('change', function(){     		 
+	  $('<div id="loader_gif"></div>').insertBefore('#upload');
+	  $('#button_add').attr({'disabled' : 'true'}).css({'opacity':'0.5','cursor':'default'});
+	  $('#add_post').attr({'disabled' : 'true'}).css({'opacity':'0.5'});
+					
+			
+			(function() {
+	  		
+	  		$("#form_add_post").ajaxForm({
+	  		
+	  		dataType : 'json',	
+			success:  function(e) {
+				if( e ) {
+					
+					$('#add_post').removeAttr('disabled').css({'opacity':'1'});
+					if( e.error == 1 ) {
+						$('#loader_gif').remove();
+					}
+					
+					$('#wrapper_preview').show();
+					$('#container_preview').html( ''+ e.output +'' ).show();
+					$('#upload').val('');
+					
+					if( e.error == 0 ) {
+						$('#loader_gif').css({background:'url("<?php echo URL_BASE; ?>thumb/60-60-tmp/'+ e.photo +'") center center no-repeat #FFF'}).addClass('deletePhoto').attr( 'data',e.photo ).attr( 'title','<?php echo $_SESSION['LANG']['delete_image']; ?>' );
+						$('#wrapper_preview').show();
+						$('#photoId').val(e.photo);
+						$('#button_add').removeAttr('disabled').css({'opacity':'1','cursor':'pointer'});
+					}
+					
+				}
+				else {
+					jAlert('<?php echo $_SESSION['LANG']['error']; ?>');
+					$('#upload').val('');
+					$('#button_add').removeAttr('disabled').css({'opacity':'1','cursor':'pointer'});
+					$('#add_post').removeAttr('disabled').css({'opacity':'1'});
+					$('#loader_gif').remove();
+						
+					
+				}
+			}//<----- SUCCESS
+			
+		}).submit();
+		})(); //<--- FUNCTION %
+	});//<--- LIVE
+	
+		//===== DELETE PHOTO
+		$(".deletePhoto").live('click',function(){ 
+					//=== PARAM
+					var element     = $(this);
+					var id          = element.attr("data");
+					var info        = 'token_id=' + id;
+					var add_post_   = $('#add_post').val();
+					var video_link_ = $('#video_link').val();
+					var song_link_ = $('#song_link').val();
+								   		
+					$.ajax({
+					   type: "GET",
+					   url: "<?php echo URL_BASE; ?>public/ajax/delete_id_photo.php",
+					   data: info,
+					   success: function(output){
+					   if( output == 'TRUE' ) {
+					   	if( add_post_ == 0 && video_link_ == 0 && song_link_ == 0 ) {
+					   		$('#button_add').attr({'disabled' : 'true'}).css({'opacity':'0.5','cursor':'default'});
+					   	}
+					   	
+					   	$('#photoId').val('');
+					   	element.fadeOut('fast',function(){
+				   		  element.remove();
+				   		});//<-- FUNCTION
+					   }
+					   
+					 }
+									
+				});//<-- AJAX
+			});//<--- CLICK
+			
+     <?php endif; ?>
+     
+     
+});//<-------- * DOM * ------>
+
+  </script>
+
+	</body>
+</html>
+  <?php
+else:
+	
+	header ('HTTP/1.0 404 Not Found');
+	include 'public/error/404.php'; // SHOW ERROR 404
+	exit;
+	endif;//<-- COUNT - 0 Result ?>

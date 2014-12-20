@@ -1,0 +1,14 @@
+<?php
+	//authenticated
+	if( Session::get( 'authenticated' ) ) :
+		
+		include('index_session.phtml');
+	 ?>
+	 	
+<?php
+	   else :
+		   
+		   include('index_session_null.phtml');
+?>
+<?php endif; ?>
+   

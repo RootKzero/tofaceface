@@ -1,0 +1,929 @@
+﻿@charset "utf-8";
+/*== CSS Document ==*/
+*              { margin:0 auto; padding:0; }
+a              { color: #0088E2; outline:0; text-decoration:none; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; transition: all .3s ease; }
+a:active       { outline: none; }
+a:focus        { -moz-outline-style: none; }
+a:hover        { text-decoration: underline; color: #0088E2; }
+img            { border:none; }
+li             { list-style:none; }
+input, button  { outline: none; border: none; }
+
+/*==================== Body ====================*/
+body { 
+	background: #E6E6E6; 
+	height: 100%; 
+	margin:0 auto;
+	padding:0; 
+	width:100%; 
+	outline:none; 
+	font-family: Arial, sans-serif; 
+	color:#666; 
+	position: relative; 
+}
+
+/*==================== Wrapper Top ====================*/
+.wrapper_top { 
+	width: 100%; 
+	height: 45px; 
+	z-index: 999; 
+	background: #FFF; 
+	position: fixed; 
+	border-bottom: 1px solid #DDD; 
+}
+
+/*==================== Inner Top Bar ====================*/
+.inner_top_bar { 
+	width: 100%; 
+	height: 46px; 
+	max-width: 960px; 
+	margin: 0 auto; 
+	line-height: 45px; 
+}
+/*==================== Logo ==================== */
+.logo {
+	vertical-align: middle;
+}
+/*==================== Navigation ====================*/
+.navigation {
+	 float: right; 
+	 display: inline-block; 
+	 font-size: 12px; 
+	 color: #FFF; 
+	 position: relative;
+}
+.navigation_responsive {
+	 float: right; 
+	 display: none; 
+	 font-size: 12px; 
+	 color: #FFF; 
+	 position: relative;
+}
+/*==================== Search Box ====================*/
+.quick_search { 
+	width: auto; 
+	position: relative; 
+	line-height: 45px; 
+	float: left; 
+	margin: 0 15px 0 0; 
+}
+.quick_search input { 
+	-webkit-border-radius: 50px; 
+	border-radius: 50px; 
+	padding: 4px 30px 4px 15px; 
+	background: #fff; 
+	color: #999; 
+	border: 1px solid #DDD; 
+}
+#buttonSearch { 
+	color: #DDD; 
+	width: 35px; 
+	background: none; 
+	height: 24px; 
+	position: absolute; 
+	top: 10px; 
+	right: 0; 
+	cursor: pointer; 
+	outline: none; 
+}
+#buttonSearch:hover { 
+	color: #999; 
+}
+.quick_search input:hover,
+.quick_search input:active,
+.quick_search input:focus { 
+	-webkit-transition: all .3s ease;  
+	transition: all .3s ease; 
+	background:  #FFF no-repeat; 
+}
+.quick_search input:focus{ 
+	border-color: #0088E2;  
+}
+
+/*==================== MENU TOP ====================*/
+.menu_top { 
+	float: left; 
+}
+.menu_top li { 
+	position: relative; 
+	float: left; 
+	padding: 0 20px 0 0; 
+}
+.menu_top li > a { 
+	color: #B8B8B8; 
+	font-size: 16px; 
+	line-height: 46px;
+	display: block;
+}
+.menu_top li a:hover { 
+	color: #0088E2; 
+	text-decoration: none;  
+}
+.menu_top li a img,
+.row-friend-request > span > img { 
+	border-radius: 100px; 
+	-webkit-border-radius: 100px; 
+	vertical-align: middle; 
+}
+.menu_top li.avatar-li {
+	padding: 0 8px 0 0;
+}
+.settings_button,
+.toogle {
+	cursor: pointer;
+}
+/*==================== MENU RESPONSIVE ====================*/
+.menu_responsive { 
+	float: left; 
+	width: 100%; 
+	text-align: left;
+	background: #333;
+	display: none;
+} 
+.menu_responsive li {
+	margin: 0; 
+	width: 100%;
+	float: left;
+	position: relative;
+}
+.menu_responsive li a {
+	padding: 15px; 
+	font-size: 12px; 
+	font-weight: normal; 
+	text-transform: none;
+	border-bottom: 1px solid #111;
+	border-top: 1px solid #444;
+	color: #999;
+	display: block;
+	text-decoration: none;
+}
+.menu_responsive li a:hover,
+.menu_responsive li a strong {
+	color: #FFF;
+}
+.menu_responsive li a.sub_list {
+	padding-left: 30px;
+}
+.form_responsive {
+	width: 100%; 
+	display: block; 
+	border-bottom: 1px solid #111;
+}
+.form_search_responsive {
+	padding: 15px;
+	text-align: center;
+	position: relative;
+}
+.form_search_responsive input {
+	border: 1px solid #DDD; 
+	width: 100%; 
+	border-radius: 3px; 
+	padding: 15px 0; 
+	text-indent: 10px; 
+	background: #FFF;
+}
+#button_search_responsive { 
+	color: #DDD; 
+	width: 35px; 
+	background: none; 
+	height: 24px; 
+	position: absolute; 
+	top: 25px; 
+	right: 20px; 
+	cursor: pointer; 
+	outline: none; 
+}
+#button_search_responsive:hover { 
+	color: #999; 
+}
+/*==================== Notifications ====================*/
+.notify { 
+	z-index: 10; 
+	top: 5px; 
+	right: 7px; 
+	position:absolute; 
+	padding: 2px 6px 2px 6px; 
+	background: #F00; 
+	color: #FFF; 
+	line-height: normal;  
+	font-weight: bold; 
+	border-radius: 100px; 
+	-webkit-border-radius: 100px; 
+	border-bottom: 1px solid #FFF; 
+	font-size: 11px; 
+}
+
+/*==================== WRAP COVER ====================*/
+.wrap_cover { 
+	width: 100%; 
+	float: left;
+	height: 400px; 
+	padding-top: 46px;
+	margin-bottom: 20px;
+	position: relative;
+}
+/*==================== shadow ====================*/
+.shadow {
+	width: 100%; 
+	float: left;
+	height: 150px; 
+	background: url('../img/shadow.png') bottom left repeat-x;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+/*==================== USER DATA ====================*/
+.user_data  { 
+	width: 100%; 
+	max-width: 960px; 
+	margin: 0 auto; 
+	padding-top: 250px;
+	position: relative;
+}
+/*==================== Container User ====================*/
+.container_user  { 
+	width: 100%; 
+	position: relative;
+}
+/*==================== Info data ====================*/
+.info_data {
+	width: 60%; 
+	float: left;
+	position: relative;
+}
+/*==================== Avatar Large ====================*/
+.avatar_large {
+	 -webkit-border-radius: 100px; 
+	 border-radius: 100px;
+	 float: left;
+	 margin: 10px;
+}
+.user_data  h2 {
+	 color: #FFF;
+	 text-shadow: 0 1px #000;
+	 float: left;
+	 margin: 40px 0 0 0;
+	 font-size: 28px;
+	 width: 100%;
+}
+/*==================== Verified ====================*/
+i.verified {
+	color: #5890FF;
+	font-size: 17px;
+	text-shadow: none;
+	background: #FFF;
+	border-radius: 20px;
+	-webkit-border-radius: 20px; 
+	padding: 1px 2px;
+}
+.user_data  h4, .user_data h5 {
+	 color: #FFF;
+	 text-shadow: 0 1px #000;
+	 float: left;
+	 margin: 5px 0 0 0;
+	 width: 100%;
+}
+/*==================== Follow Button ====================*/
+.follow_button { 
+	position: absolute; 
+	bottom: -50px; 
+	left: 0; 
+	z-index: 10; 
+	padding: 12px 20px; 
+	background: #fff; 
+	color: #333;
+	font-size: 14px;
+	-webkit-border-radius: 2px; 
+	border-radius: 2px;
+	font-weight: bold;
+	cursor: pointer; 
+	box-shadow: 0 0 5px #333;
+}
+a.follow_button:hover,
+a.follow_active {
+	text-decoration: none;
+	color: #FFF;
+	background: #0088E2;
+} 
+a.follow_button:active {
+	box-shadow: inset 0 4px 5px rgba(0,0,0, 0.5);
+	-webkit-box-shadow: inset 0 4px 5px rgba(0,0,0, 0.5);
+}
+/*==================== Options User Button ====================*/
+.options_user_button { 
+	position: absolute; 
+	bottom: -50px; 
+	left: 75px; 
+	z-index: 10; 
+	padding: 12px 15px; 
+	background: #fff; 
+	color: #333;
+	font-size: 14px;
+	-webkit-border-radius: 2px; 
+	border-radius: 2px;
+	font-weight: bold;
+	cursor: pointer; 
+	box-shadow: 0 0 5px #333;
+}
+a.options_user_button:hover {
+	text-decoration: none;
+	color: #FFF;
+	background: #0088E2;
+} 
+a.options_user_button:active {
+	box-shadow: inset 0 4px 5px rgba(0,0,0, 0.5);
+	-webkit-box-shadow: inset 0 4px 5px rgba(0,0,0, 0.5);
+}
+/*==================== Container General  ====================*/
+.container_general {
+	width: 100%; 
+	max-width: 982px; 
+	margin: 0 auto; 
+}
+.padding_div {
+	padding: 0 10px;
+}
+/*==================== left_col ====================*/
+.left_col {
+	float: left;
+	display: block;
+	width: 45%;	
+}
+/*==================== right_col ====================*/
+.right_col {
+	float: right;
+	width: 53.333%;
+	display: block;
+}
+/*==================== container_timeline ====================*/
+.container_timeline {
+	 border: 1px solid #CCC; 
+	 margin-bottom: 20px; 
+	 background: #FFF; 
+	 -webkit-border-radius: 4px; 
+	 border-radius: 4px;
+	 border-bottom-width: 2px;
+	 overflow: hidden;
+	 position: relative;
+}
+/*==================== headers ====================*/
+.headers {
+	
+	border-bottom: 1px solid #ddd;
+	background: #f5f5f5;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+.headers a {
+	padding: 15px; 
+	font-size: 15px; 
+	color: #666; 
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+}
+.headers a:hover {
+	color: #333; 
+}
+.headers a .icon-chevron-right {
+	float: right;
+	font-size: 14px;
+}
+.headers a span {
+	font-weight: normal;
+}
+/*==================== List Data  ====================*/
+.list_data {
+	display: block;
+	padding: 15px; 
+	overflow: hidden;
+}
+.list_data li i {
+	margin-right: 10px;
+	width: 16px;
+	display: inline-block;
+	font-size: 15px;
+	text-align: center;
+}
+.list_data li {
+	display: block;
+	float: left;
+	color: #b8b8b8;
+	padding: 7px 0 7px 0;
+	font-size: 14px;
+	width: 100%;
+}
+.image_activity {
+	float: left;
+	margin-right: 15px;
+}
+.no-padding-top {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/*==================== GRID SPAN ====================*/
+span.grid_span {
+	float: left;
+	display: block;
+	padding: 10px 0;
+	line-height: 20px;
+}
+span.text_subtitle {
+	display: block;
+	font-size: 12px;
+}
+/*==================== List Data 2  ====================*/
+.list_data_2 {
+	display: block;
+	padding: 15px; 
+	overflow: hidden;
+}
+
+.list_data_2 li {
+	display: block;
+	float: left;
+	color: #b8b8b8;
+	padding: 7px 0 7px 0;
+	font-size: 14px;
+	margin-right: 5px;
+}
+/*==================== Photo List ====================*/
+.photos_list {
+	display: block;
+	padding: 15px; 
+	overflow: hidden;
+}
+
+.photos_list li {
+	display: block;
+	float: left;
+	color: #b8b8b8;
+	padding: 7px 0 7px 0;
+	font-size: 14px;
+	margin-right: 5px;
+}
+
+/*==================== POST DETAILS ====================*/
+.grid_1 {
+	display: block;
+	margin-bottom: 10px;
+	padding: 15px 15px 0 15px; 
+	overflow: hidden;
+}
+.grid_2 {
+	display: block;
+	padding: 0 15px 0 15px; 
+	overflow: hidden;
+	margin-bottom: 5px;
+}
+.grid_3 {
+	display: block;
+	padding: 10px 15px 0 15px; 
+	overflow: hidden;
+}
+.avatar_post {
+	float: left;
+	margin: 0 5px 0 0;
+	width: 9.355%;
+	
+}
+.avatar_post img {
+	-webkit-border-radius: 100px; 
+	border-radius: 100px;
+}
+.grid_right {
+	float: right;
+	width: 86.278%;
+}
+.user-details {
+	float: left;
+	color: #333;
+	font-size: 17px;
+	font-weight: bold;
+	padding: 5px 0;
+	width: 100%;
+}
+.timeago {
+	float: left;
+	color: #999;
+	font-size: 12px;
+	width: 100%;
+}
+.paragraphs_post {
+	word-wrap: break-word;
+	width: 100%; 
+	float: left; 
+	font-size: 14px; 
+	font-weight: normal; 
+	color: #969696; 
+	line-height: 17px; 
+	text-align: left;
+}
+.icon-angle-down {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
+	font-size: 20px;
+	color: #999;
+}
+
+/*==================== COMMENTS ====================*/
+.comments {
+	float: left;
+	width: 100%;
+	display: block;
+	background: #f5f5f5;
+	border-top: 1px solid #DDD;
+}
+.list_comments {
+	padding: 0 15px 0 15px;
+	display: block;
+	overflow: hidden;
+}
+.avatar_comments {
+	float: left; 
+	display: block;
+	width: 7.237%;
+}
+.list_comments li {
+	display: block;
+	width: 100%;
+	float: left;
+	border-bottom: 1px solid #DDD;
+	padding: 10px 0;
+	position: relative;
+}
+.grid_comments {
+	float: right; 
+	width: 90%;
+}
+.report_comments {
+	position: absolute;
+	top: 15px;
+	right: 5px;
+	font-size: 12px;
+	cursor: pointer;
+	color: #999;
+}
+.report_comments:hover {
+	color: #333;
+}
+.grid_comments h2 {
+	font-size: 15px;
+	margin-bottom: 5px;
+}
+.list_comments img {
+	border-radius: 100px; 
+	-webkit-border-radius: 100px; 
+}
+.grid_comments p {
+	font-size: 14px;
+	word-wrap: break-word;
+	font-weight: normal; 
+	color: #646464; 
+	line-height: 17px; 
+	text-align: left;
+	margin-bottom: 3px;
+}
+#form_reply_post {
+	padding: 15px;
+	overflow: hidden;
+}
+#form_reply_post textarea {
+	background: #FFF;  
+	border-radius: 2px; 
+	resize: none;
+	-webkit-border-radius: 2px; 
+	display:block; 
+	border: 1px solid #DDD; 
+	padding: 9px 5px; 
+	overflow: hidden;
+	float: left;
+	width: 82.665%;
+	box-shadow: inset 0 1px 2px #DDD;
+	-webkit-box-shadow: inset 0 1px 2px #DDD;
+	box-sizing: border-box;
+} 
+#form_reply_post textarea:focus {
+	border-color: #0088E2;
+}
+#form_reply_post button {
+	background: #0088E2;  
+	border-radius: 2px; 
+	-webkit-border-radius: 2px; 
+	display:block; 
+	border: 1px solid #0085FF; 
+	width: 13.097%;
+	text-align: center;
+	color: #FFF;
+	float: right;
+	font-weight: bold;
+	cursor: pointer;
+	position: relative;
+	height: 36px;
+} 
+#form_reply_post button:hover {
+	background: #FFF;  
+	color: #0088E2;
+	-webkit-transition: all .3s ease;  
+	transition: all .3s ease; 
+	border-color: #DDD; 
+}
+#form_reply_post button:active {
+	top: 2px;
+	box-shadow: inset 0 4px 5px rgba(0,0,0, 0.1);
+	-webkit-box-shadow: inset 0 4px 5px rgba(0,0,0, 0.1);
+}
+/*==================== ACTIONS ====================*/
+.actions {
+	width: 100%;
+	float: left;
+	display: block;
+}
+.actions_list {
+	padding: 10px 15px;
+	display: block;
+	overflow: hidden;
+}
+.actions_list li {
+	float: left;
+	margin: 0 5px 0;
+}
+.actions_list li.right_list {
+	float: right;
+	margin: 0 5px 0;
+}
+.actions_list li.right_list img {
+	border-radius: 100px; 
+	-webkit-border-radius: 100px; 
+}
+.actions_list li a {
+	color: #999;
+	font-size: 14px;
+	text-decoration: none;
+}
+.actions_list li a:hover {
+	color: #0088E2;
+}
+/*==================== Form Post ====================*/
+#form_post {
+	padding: 15px;
+	overflow: hidden;
+}
+#form_post textarea {
+	background: #FFF;  
+	border-radius: 2px; 
+	resize: none;
+	-webkit-border-radius: 2px; 
+	display:block; 
+	border: 1px solid #DDD; 
+	padding: 9px 5px; 
+	overflow: hidden;
+	float: left;
+	width: 75.665%;
+	box-shadow: inset 0 1px 2px #DDD;
+	-webkit-box-shadow: inset 0 1px 2px #DDD;
+} 
+#form_post textarea:focus {
+	border-color: #0088E2;
+}
+#form_post button {
+	background: #0088E2;  
+	border-radius: 2px; 
+	-webkit-border-radius: 2px; 
+	display:block; 
+	border: 1px solid #0085FF; 
+	width: 18.711%;
+	text-align: center;
+	height: 36px;
+	color: #FFF;
+	float: right;
+	font-weight: bold;
+	cursor: pointer;
+	position: relative;
+} 
+#form_post button:hover {
+	background: #FFF;  
+	color: #0088E2;
+	-webkit-transition: all .3s ease;  
+	transition: all .3s ease; 
+	border-color: #DDD; 
+}
+#form_post button:active {
+	top: 2px;
+	box-shadow: inset 0 4px 5px rgba(0,0,0, 0.1);
+	-webkit-box-shadow: inset 0 4px 5px rgba(0,0,0, 0.1);
+}
+/*==================== list_icons_actions ====================*/
+.list_icons_actions {
+	float: left;
+	width: 100%;
+	margin: 0 0 10px 0;
+}
+.list_icons_actions li {
+	float: left;
+	margin: 0 10px 0 0;
+}
+.list_icons_actions li a {
+	color: #999;
+	font-size: 16px;
+	text-decoration: none;
+	padding: 5px 10px;
+	border-radius: 3px; 
+	-webkit-border-radius: 3px;
+	position: relative;
+	overflow:hidden;
+	display: block;
+}
+.list_icons_actions li a:hover {
+	color: #FFF;
+	background: #0088E2;
+}
+.type_file > input {
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	margin: 0; 
+	line-height: 28px; 
+	opacity: 0;
+	padding-left: 40px;
+	cursor: pointer;
+}
+/*==================== Menu Toogle ====================*/
+.arrowUp      { 
+	width: 20px; 
+	height: 10px; 
+	background: url('../img/arrow.png') no-repeat; 
+	position: absolute; 
+	right: 5px; 
+	top: -10px; 
+}
+.options_toogle { 
+	width: 100%; 
+	float: left; 
+	padding: 10px 0; 
+}
+.options_toogle li { 
+	float: left; 
+	line-height: normal; 
+	width: 100%; 
+	background: none; 
+	padding: 0; 
+}
+.options_toogle li > a { 
+	text-indent:0; 
+	display: block; 
+	padding: 8px 25px; 
+	color: #666; 
+	font-size: 12px; 
+	white-space: normal;
+	line-height: normal;
+	overflow: hidden;
+}
+.options_toogle li > a:hover {
+	background : #0088E2;
+	text-decoration: none; color: #FFF;
+ }
+#boxToogle { 
+	border-radius: 5px; 
+	box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+	background: #FFF; 
+	position: absolute; 
+	z-index: 25; 
+	
+	border: 1px solid #CCC;
+	/*display: none;*/
+}
+.bottomList {
+	border-top: 1px solid #DDD;
+}
+/* User Toogle */
+.user-toogle {
+	right: 10px; 
+	top: 45px;
+	width: 180px; 
+	display: none;
+}
+/* Notifications Toogle */
+.notifications-toogle {
+	right: 10px; 
+	top: 45px;
+	width: 315px; 
+	display: none;
+}
+.notifications-toogle > ul > li {
+	border-bottom: 1px solid #DDD;
+}
+.notifications-toogle > ul > li:last-child {
+	border-bottom: none;
+}
+/* Messages Toogle */
+.messages-toogle {
+	right: 10px; 
+	top: 45px;
+	width: 315px; 
+	display: none;
+}
+.messages-toogle > ul > li {
+	border-bottom: 1px solid #DDD;
+}
+.messages-toogle > ul > li:last-child {
+	border-bottom: none;
+}
+/* Friend Request Toogle */
+.friend-request-toogle {
+	right: 10px; 
+	top: 45px;
+	width: 300px; 
+	display: none;
+}
+.friend-request-toogle > ul > li {
+	border-bottom: 1px solid #DDD;
+}
+.friend-request-toogle > ul > li:last-child {
+	border-bottom: none;
+}
+.row-friend-request {
+	text-indent:0; 
+	display: block; 
+	padding: 8px 25px; 
+	color: #666; 
+	font-size: 12px; 
+	white-space: normal;
+	line-height: normal;
+	overflow: hidden;
+}
+.button-confirm {
+	background: #0088E2; 
+	border-radius: 2px; 
+	-webkit-border-radius: 2px; 
+	display: block; 
+	border: 1px solid #0085FF;  
+	text-align: center; 
+	height: 18px; 
+	color: #FFF; 
+	float: left; 
+	font-weight: bold; 
+	cursor: pointer; 
+	position: relative;
+	padding: 2px 8px;
+	margin: 5px 5px 0 0;
+}
+.button-confirm:hover {
+	background: #FFF; 
+	color: #0088E2;
+	-webkit-transition: all .3s ease;
+	transition: all .3s ease;
+	border-color: #DDD;
+}
+.button-cancel {
+	background: #FFF; 
+	border-radius: 2px; 
+	-webkit-border-radius: 2px; 
+	display: block; 
+	border: 1px solid #0085FF;  
+	text-align: center; 
+	height: 18px; 
+	color: #0088E2; 
+	float: left; 
+	font-weight: bold; 
+	cursor: pointer; 
+	position: relative;
+	padding: 2px 8px;
+	margin: 5px 5px 0 0;
+}
+.button-cancel:hover {
+	background: #0088E2; 
+	color: #FFF;
+	-webkit-transition: all .3s ease;
+	transition: all .3s ease;
+	border-color: #0085FF;
+}
+.photo_span {
+	float: left;
+	display: block;
+}
+.text_desc {
+	font-weight: normal; 
+	font-size: 12px; 
+	vertical-align: 0; 
+	float: none;
+}
+.row-span-desc {
+	float: right; 
+	width: 85%;
+}
+.block-width {
+	width: 100%;
+	float: left;
+}
+.timestamp-toogle {
+	font-size: 11px;
+	margin-top: 2px;
+	color: #ACACAC;
+}
+.right-icon {
+	float: right;	
+}

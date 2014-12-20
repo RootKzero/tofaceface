@@ -1,0 +1,446 @@
+<?php 
+if( !Session::get( 'authenticated' ) ) :
+	
+	header( 'location: '.URL_BASE );
+	exit;
+	
+endif;
+if( $this->infoSession->status == 'active' ):
+include 'views/inc/header.php'; ?>
+<link href="<?php echo $_layoutParams['root_css']; ?>colorpicker.css" rel="stylesheet" type="text/css" />
+<style>
+	
+	body
+	{
+		background-position: <?php echo $this->infoSession->bg_position; ?> 55px;
+		background-attachment: <?php echo $this->infoSession->bg_attachment; ?>;
+		
+		<?php if( $this->infoSession->bg_attachment == 'fixed' ): ?>
+		background-repeat: repeat repeat; 
+		<?php else: ?>
+		background-repeat: no-repeat; 
+		<?php endif; ?>
+		
+		background-color: <?php echo $this->infoSession->bg_color; ?>;
+		
+		<?php if( $this->infoSession->bg != '' ): ?>
+		background-image: url(<?php echo URL_BASE.'public/backgrounds/'.$this->infoSession->bg; ?>);
+		<?php endif; ?>
+	}
+	
+	body a,
+	body a:hover { color: <?php echo $this->infoSession->color_link; ?>; }
+</style>
+</head>
+	<!-- Body -->
+	<body data-max="<?php echo MAX_LENGTH; ?>" data-accept="<?php echo $_SESSION['LANG']['accept']; ?>" data-cancel="<?php echo $_SESSION['LANG']['cancel']; ?>">
+		<!-- warpper_top_bar -->
+		<div class="warpper_top_bar">
+				<!-- inner_top_bar -->
+				<header class="inner_top_bar">
+					<!-- padding_class -->
+					<div class="padding_class">
+						<a href="<?php echo URL_BASE; ?>">
+							<?php include 'views/inc/logo.php'; ?>
+						</a>
+					
+					<?php include 'views/inc/navigation.php'; ?>
+			    </div><!-- padding_class -->
+			</header><!-- inner_top_bar -->
+		</div><!-- warpper_top_bar -->
+	
+	<!-- page -->
+	<div class="page">
+		<!-- layout -->
+		<section class="layout session">
+			<div class="popout"></div>
+			<!-- padding_class -->
+		    <div class="padding_class sessionClass">
+		    	<div class="formSearchResp">
+						   <form action="search/" class="formResponsive" method="get" id="search_engine" accept-charset="UTF-8">
+							  <input id="btnItems" name="q" class="mention" type="text" placeholder="<?php echo $_SESSION['LANG']['search_word']; ?>" maxlength="100">	
+						      </form>
+					</div>
+		    <!-- wrapper_grid -->
+		     <div class="wrapper_grid floatLeft">
+				   
+				<?php 
+				//<--- * Profile * --->
+				include 'views/inc/profile_static.php'; 
+				?>
+				   
+				   <!-- Grid 1 -->
+				   <div class="grid_1">
+				   		<!-- container_grid -->
+				   		<div class="container_grid">
+				   		    <ul class="settingsList">
+				   		    	<li>
+				   		    		<a href="<?php echo URL_BASE; ?>messages/"><?php echo $_SESSION['LANG']['messages']; ?></a>
+				   		    	</li>
+				   		    	<li>
+				   		    		<a href="<?php echo URL_BASE; ?>settings/"><?php echo $_SESSION['LANG']['settings']; ?></a>
+				   		    	</li>
+				   		    	<li>
+				   		    		<a href="<?php echo URL_BASE; ?>profile/"><?php echo $_SESSION['LANG']['profile']; ?></a>
+				   		    	</li>
+				   		    	<li>
+				   		    		<a href="<?php echo URL_BASE; ?>password/"><?php echo $_SESSION['LANG']['password']; ?></a>
+				   		    	</li>
+				   		    	<li class="lastSet">
+				   		    		<a href="<?php echo URL_BASE; ?>design/"><?php echo $_SESSION['LANG']['design']; ?></a>
+				   		    	</li>
+				   		    </ul>
+				   		</div><!-- container_grid -->
+				   </div><!-- Grid 1 -->
+				   
+				   <?php
+				   //<--- * AD * -->
+				include 'views/inc/advertising.php';
+				
+				  //<---- * trending * --->
+				   include 'views/inc/trending.php'; 
+				    ?>
+				      <!-- Grid 1 -->
+				   <div class="grid_1">
+				   		<!-- container_grid -->
+				   		<div class="container_grid about_pages">
+				   			<?php include 'views/inc/footer_session.php'; ?>
+				   		</div><!-- container_grid -->
+				   </div><!-- Grid 1 -->
+				   
+			   </div><!-- wrapper_grid -->
+			   
+			   
+			   <!-- Grid 2 -->
+			   <div class="grid_2 floatRight">
+			    <h4 class="titleBar box-class" data-title="<?php echo  $this->title; ?>"><?php echo  $this->title; ?></h4>
+			    <?php include( 'views/modules/'.$this->module.'Module.php' ); ?>
+			   </div><!-- Grid 2 -->
+			   		
+			 </div><!-- padding_class -->
+		</section><!-- layout -->
+	</div><!-- page -->
+	
+   
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery-1.7.1.min.js"></script>
+   
+   <script type="text/javascript">
+   	 $('.country_<?php echo $this->infoSession->country; ?>').attr({'selected':'selected'});
+   	 $('.<?php echo $this->infoSession->language; ?>').attr({'selected':'selected'});
+     $('.mod_<?php echo $this->infoSession->mode; ?>').attr({'selected':'selected'});
+     $('#radio_<?php echo $this->infoSession->bg_position	; ?>').attr({'checked':'checked'});
+     $('#radio_<?php echo $this->infoSession->messages_private; ?>').attr({'checked':'checked'});
+	
+   </script>
+   
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.easing.1.3.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.placeholder.1.1.1.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery-ui-1.8.17.custom.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>functions.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>count.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.form.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>settings.user.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>timeago/jqueryTimeago_<?php echo $_SESSION['lang']; ?>.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>colorpicker.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.colorbox.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.scroll.user.js"></script>
+ 	
+ <script type="text/javascript">
+   jQuery(document).ready(function($) {
+   
+   <?php if( Session::get( 'authenticated' ) && $_GET['page'] == 'messages' ): ?>
+   $('.posts').scrollPagination({
+		nop     : 10, // El número de datos por desplazarse a cargar
+		offset  : 0, // Desplazamiento inicial, comienza en 0, en este caso
+		error   : '',
+		delay   : 500, // Cuando se desplaza por los datos se cargan después de un período de tiempo retardado.
+		               // Esto se debe principalmente a problemas de usabilidad. Usted puede modificar esto como mejor le parezca
+		scroll  : true, // El bit principal, si se define como datos falsos no se carga como el usuario se desplaza. 
+		query   : 0,
+		file    :'get_messages.php',
+		_userId : <?php echo$_SESSION['authenticated']; ?>,
+		totalGlobal :  <?php echo  $this->countMgs; ?>
+	});
+	
+	$('#reply_msg').live('hover', function(){
+		if ($(this).data('hascharcount') == undefined) {
+			$(this).data('hascharcount', true).charCount({ allowed: <?php echo MAX_LENGTH; ?>, warning: 10 });
+		}
+		});
+		
+   <?php endif; ?>
+   
+   <?php if( Session::get( 'authenticated' ) && $_GET['page'] == 'settings' ): ?>
+   $(".delete-account").click(function()
+   {
+   	var out  = 'delete=true';
+   	jConfirm("<?php echo $_SESSION['LANG']['confirm_delete_account']; ?>", '<?php echo $_SESSION['LANG']['confirm_action']; ?>', function( r ){
+	
+	if( r == true )
+	     {
+	
+		 $.ajax({
+		   type: "POST",
+		   url: "public/ajax/delete_account.php",
+		   data: out,
+		   success: function( result ){
+		   if( result == 'ok' )
+		   { 
+		   	window.location.reload();
+		   }//<-- IF
+			   else
+			   {
+			   	 jAlert('<?php echo $_SESSION['LANG']['error']; ?>');
+			   }
+		 }//<-- RESULT 
+	   });//<--- AJAX
+
+	 }//END IF R TRUE 
+	 
+	  }); //Jconfirm  
+   	
+   });
+   <?php endif;//<<--- Settings ?>
+   
+   //=== PLACEHOLDER	
+  $(function(){
+      $(':input[placeholder]').placeholder();
+    });
+    
+   //====== TIME AGO
+	
+<?php if( Session::get( 'authenticated' ) ) : ?>
+		
+		$('#bio').live('hover', function(){
+		if ($(this).data('hascharcount') == undefined) {
+			$(this).data('hascharcount', true).charCount({ 
+				allowed: <?php echo MAX_LENGTH; ?>, 
+				warning: 10,
+				css: 'counterBio'
+				});
+		}
+		});
+	
+	<?php if( $_GET['page'] == 'profile' ): ?>
+	
+    //<<<<<<<=================== * UPLOAD AVATAR  * ===============>>>>>>>//
+    
+    $('#uploadAvatar').live('change', function(){
+    $('#loader_gif').remove();  		 
+	$('<div id="loader_gif"></div>').appendTo('.labelAvatar');
+	(function(){
+	 $("#formAvatar").ajaxForm({
+	 dataType : 'json',	
+	 success:  function(e){
+	 if( e ){
+        if( e.error == 1 ){
+		$('#loader_gif').remove();
+		$('.popout').html( ''+ e.output +'' ).fadeIn();
+		if( e.reload == 1 ){
+			window.location.reload();
+		  } 
+		}//<-- Error
+		$('#uploadAvatar').val('');
+		if( e.error == 0 ) {
+				$('.popout').fadeOut();
+				$('#loader_gif').css({'cursor':'pointer',background:'url("<?php echo URL_BASE; ?>public/avatar/'+ e.photo +'") center center no-repeat #FFF'}).addClass('deletePhoto').attr( 'data', e.photo ).attr( 'title','<?php echo $_SESSION['LANG']['delete_image']; ?>' );
+				$('#avatar_link').html('<img class="avatar_user" src="<?php echo URL_BASE; ?>thumb/48-48-public/avatar/'+ e.photo +'" />');
+				$('.userAvatar').html('<img src="<?php echo URL_BASE; ?>thumb/25-25-public/avatar/'+ e.photo +'" />');
+			}
+		}//<-- e
+			else 
+			{
+				jAlert('<?php echo $_SESSION['LANG']['error']; ?>');
+				$('#uploadAvatar').val('');
+				
+			}
+		}//<----- SUCCESS
+		}).submit();
+		})(); //<--- FUNCTION %
+	});//<<<<<<<--- * LIVE * --->>>>>>>>>>>
+	
+		//===== DELETE PHOTO AVATAR
+		$(".deletePhoto").live('click',function(){ 
+			//=== PARAM
+			var element     = $(this);
+			var id          = element.attr("data");
+			var info        = 'token_id=' + id;
+			$.ajax({
+			   type: "GET",
+			   url: "<?php echo URL_BASE; ?>public/ajax/delete_photo_avatar.php",
+			   data: info,
+			   success: function( output ){
+			   if( output == 'TRUE' )
+			   {
+			   	$('#avatar_link').html('<img class="avatar_user" src="<?php echo URL_BASE; ?>thumb/48-48-public/avatar/avatar.png" />');
+			   	$('.userAvatar').html('<img src="<?php echo URL_BASE; ?>thumb/25-25-public/avatar/avatar.png" />');
+			   	   $('.labelAvatar').css({ background: 'url("<?php echo URL_BASE; ?>public/avatar/avatar.png") center center no-repeat #FFF' });
+			    	$('#photoId').val('');
+			   	     element.fadeOut('fast',function(){
+		   		      element.remove();
+		   		});//<-- FUNCTION
+					   }
+					 }//<-- OUTPUT
+				});//<-- AJAX
+			});//<<<<<<<--- * CLICK * --->>>>>>>>>>>
+	
+	//<<<<<<<=================== * UPLOAD COVER  * ===============>>>>>>>//
+	$('#uploadCover').live('change', function(){
+    $('#loader_gif_2').remove();  		 
+	$('<div id="loader_gif_2"></div>').appendTo('.label_cover');
+	(function(){
+	 $("#formCover").ajaxForm({
+	 dataType : 'json',	
+	 success:  function(e){
+	 if( e ){
+        if( e.error == 1 ){
+		$('#loader_gif_2').remove();
+		$('.popout').html( ''+ e.output +'' ).fadeIn();
+		if( e.reload == 1 ){
+			window.location.reload();
+		  } 
+		}//<-- Error
+		$('#uploadCover').val('');
+		if( e.error == 0 )
+			{	
+				$('.popout').fadeOut();
+				$('#preview_cover').html('<img src="<?php echo URL_BASE ?>thumb/499-151-public/cover/'+ e.photo +'" />');
+				$('#loader_gif_2').css({'cursor':'pointer',background:'url("<?php echo URL_BASE; ?>thumb_fixed/62-62-public/cover/'+ e.photo +'") center center no-repeat #FFF'}).addClass('deleteCover').attr( 'data', e.photo ).attr( 'title','<?php echo $_SESSION['LANG']['delete_image']; ?>' );			
+			}
+		}//<-- e
+			else 
+			{
+				jAlert('<?php echo $_SESSION['LANG']['error']; ?>');
+				$('#uploadCover').val('');
+				
+			}
+		}//<----- SUCCESS
+		}).submit();
+		})(); //<--- FUNCTION %
+	});//<<<<<<<--- * LIVE * --->>>>>>>>>>>
+	
+	//===== DELETE COVER
+		$(".deleteCover").live('click',function(){ 
+			//=== PARAM
+			var element     = $(this);
+			var id          = element.attr("data");
+			var info        = 'token_id=' + id;
+			$.ajax({
+			   type: "GET",
+			   url: "<?php echo URL_BASE; ?>public/ajax/delete_photo_cover.php",
+			   data: info,
+			   success: function( output ){
+			   if( output == 'TRUE' )
+			   {
+			   	   $('#coverUser').css({ backgroundImage: 'none' });
+			    	$('#photoId').val('');
+			   	     element.fadeOut('fast',function(){
+		   		      element.remove();
+		   		});//<-- FUNCTION
+		   		
+		   		 $('#preview_cover > img').slideUp('fast',function(){
+		   		      $('#preview_cover > img').remove();
+		   		});//<-- FUNCTION
+		   		
+				}//<--- TRUE
+					 }//<-- OUTPUT
+				});//<-- AJAX
+			});//<<<<<<<--- * CLICK * --->>>>>>>>>>>
+			
+	<?php endif; //<--- PROFILE ?>
+	
+	<?php 
+	//<<<<<<-------------- * Design * ---------------->>>>
+	if( $_GET['page'] == 'design' ): ?>
+		
+		
+		//<<<<<<<=================== * Upload Background  * ===============>>>>>>>//
+	$('#upload_bg').live('change', function(){
+    $('#loader_gif').remove();  		 
+	$('<div id="loader_gif"></div>').appendTo('.labelAvatar');
+	(function(){
+	 $("#formBg").ajaxForm({
+	 dataType : 'json',	
+	 success:  function(e){
+	 if( e ){
+        if( e.error == 1 ){
+		$('#loader_gif').remove();
+		$('.popout').html( ''+ e.output +'' ).fadeIn();
+		if( e.reload == 1 ){
+			window.location.reload();
+		  } 
+		}//<-- Error
+		$('#upload_bg').val('');
+		if( e.error == 0 )
+			{	
+				$('.popout').fadeOut();
+				$('body').css({backgroundImage:'url("public/backgrounds/'+e.photo+'")'});
+				$('#loader_gif').css({'cursor':'pointer',background:'url("<?php echo URL_BASE; ?>thumb_fixed/100-100-public/backgrounds/'+ e.photo +'") center center no-repeat #FFF'}).addClass('deleteBg').attr( 'data-id', e.photo ).attr( 'title','<?php echo $_SESSION['LANG']['delete_image']; ?>' );			
+			}
+		}//<-- e
+			else 
+			{
+				jAlert('<?php echo $_SESSION['LANG']['error']; ?>');
+				$('#upload_bg').val('');
+				
+			}
+		}//<----- SUCCESS
+		}).submit();
+		})(); //<--- FUNCTION %
+	});//<<<<<<<--- * LIVE * --->>>>>>>>>>>
+	
+		//<<--- Color Link
+		$('#link').ColorPicker({
+			color: '<?php echo $this->infoSession->color_link; ?>',
+			onShow: function (colpkr) {
+				$(colpkr).fadeIn(500);
+				return false;
+			},
+			onHide: function (colpkr) {
+				$(colpkr).fadeOut(500);
+				return false;
+			},
+			onChange: function (hsb, hex, rgb) {
+				$('#link').css('background','#' + hex);
+				$('#linkData').val('#' + hex);
+				$('body a').not('.username_right,.options_toogle > li > a').css('color','#' + hex);
+			}
+			
+		});//<--- End Color Link
+		
+		//<<--- Color Bg
+		$('#bg_color').ColorPicker({
+			color: '<?php echo $this->infoSession->bg_color; ?>',
+			onShow: function (colpkr) {
+				$(colpkr).fadeIn(500);
+				return false;
+			},
+			onHide: function (colpkr) {
+				$(colpkr).fadeOut(500);
+				return false;
+			},
+			onChange: function (hsb, hex, rgb) {
+				$('#bg_color').css('background','#' + hex);
+				$('#bgData').val('#' + hex);
+				$('body').css('background-color','#' + hex);
+			}
+			
+		});//<--- End Color Bg
+		
+	<?php endif;//<<<--- Design ?>
+	
+<?php endif; //<--- SESSION ?>
+     
+     jQuery("span.timeAgo").timeago();
+});//<-------- * DOM * ------>
+
+  </script>
+
+	</body>
+</html>
+  <?php
+else:
+	
+	session_destroy();
+      
+	endif; ?>

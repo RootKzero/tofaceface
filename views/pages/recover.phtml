@@ -1,0 +1,120 @@
+<?php 	
+if( Session::get( 'authenticated' ) ) :
+	
+	header( 'location: '.URL_BASE );
+	exit;
+	
+endif;
+?>
+<?php include 'views/inc/header.php'; ?>
+<style>
+ body{
+		
+		background-color: #F8F8F8;
+
+	}
+	
+</style>
+</head>
+	<!-- Body -->
+	<body data-max="<?php echo MAX_LENGTH; ?>">
+		<!-- warpper_top_bar -->
+		<div class="warpper_top_bar">
+				<!-- inner_top_bar -->
+				<header class="inner_top_bar">
+					<!-- padding_class -->
+					<div class="padding_class">
+						<a href="<?php echo URL_BASE; ?>">
+							<?php include 'views/inc/logo.php'; ?>
+						</a>
+					
+					<?php include 'views/inc/navigation.php'; ?>
+			    </div><!-- padding_class -->
+			</header><!-- inner_top_bar -->
+		</div><!-- warpper_top_bar -->
+	
+	<!-- page -->
+	<div class="page">
+		<!-- layout -->
+		<section class="layout session" style="max-width: 750px;">
+			<div class="popout"></div>
+			<!-- padding_class -->
+		    <div class="padding_class sessionClass">
+		    	
+			   
+			   <!-- Grid 2 -->
+			   <div class="grid_2 floatRight" style="width: 100%;">
+
+				
+				<?php if( !Session::get( 'authenticated' ) ): ?>
+					<?php if( $this->codeValid == 1 ): ?>
+					<h4 class="statusBar"><?php echo $_SESSION['LANG']['choose_new_pass'] ?></h4>
+				       <div class="spanStatus" style="border: none;">
+							<form action="" method="POST" id="updatePass">
+								<label><?php echo $_SESSION['LANG']['new_pass'] ?></label>
+								<span style="width: 100%; float: left;">
+								<input type="password" name="pass_1" id="pass_1" />
+								</span>
+								<label><?php echo $_SESSION['LANG']['verify_pass'] ?></label>
+								<span style="width: 100%; float: left;">
+									<input type="password" name="pass_2" id="pass_2" />
+								</span>
+								<input type="hidden" name="idhash" value="<?php echo $_GET['c'] ?>" />
+								<button type="submit" id="buttonUpdatePass"><?php echo $_SESSION['LANG']['send']; ?></button>
+							</form>
+			   			</div>	
+			   			
+			   			<?php 
+					else: 
+						?>
+						<h4 class="statusBar" style="text-align: center;"><?php echo $_SESSION['LANG']['code_not_valid'] ?></h4>
+	                <?php
+			   			endif;//<<<-- Code Valid ?>
+			   			
+			   			<?php endif; //<<<-- Session Active ?>
+			
+		</div><!-- Grid 2 -->
+		
+		<!-- wrapper_grid -->
+		     <div class="wrapper_grid floatLeft" style="width: 100%; text-align: center; margin-top: 10px;">
+				   
+				    <!-- Grid 1 -->
+				   <div class="grid_1">
+				   		<!-- container_grid -->
+				   		<div class="container_grid about_pages">
+				   			<?php include 'views/inc/footer_session.php'; ?>
+				   		</div><!-- container_grid -->
+				   </div><!-- Grid 1 -->
+				   
+			   </div><!-- wrapper_grid -->
+			   		
+			 </div><!-- padding_class -->
+		</section><!-- layout -->
+	</div><!-- page -->
+
+   
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery-1.7.1.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.easing.1.3.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.placeholder.1.1.1.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery-ui-1.8.17.custom.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>functions.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>count.js"></script>
+   
+   <?php if( !Session::get( 'authenticated' ) ) : ?>
+   <script src="<?php echo $_layoutParams['root_js']; ?>login.sign.up.js"></script>
+   <?php endif; ?>
+ 	
+ <script type="text/javascript">
+   jQuery(document).ready(function($) {
+   
+   //=== PLACEHOLDER	
+  $(function(){
+      $(':input[placeholder]').placeholder();
+    });
+     
+});//<-------- * DOM * ------>
+
+  </script>
+
+	</body>
+</html>

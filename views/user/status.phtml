@@ -1,0 +1,412 @@
+<?php 
+//<--- * User * ---> 
+$count = count( $this->data );
+
+//<--- * Favs * --->
+$countFavs = count( $this->favorites );
+
+if( isset( $this->data->id ) && $this->checkBlocked[0]['status'] != 1 ) :
+
+//============ FAVORITES
+	if( $this->data->favoriteUser == 1 ) {
+		$iconFav      = ' iconfavorited';
+		$spanFav      = ' class="favorited"';
+		$textFav      = $_SESSION['LANG']['favorited'];
+		$spanAbsolute = '<span class="add_fav"></span>';
+	} else {
+		$iconFav      = null;
+		$spanFav      = null;
+		$spanAbsolute = null;
+		$textFav      = $_SESSION['LANG']['favorite'];
+	}
+	
+	
+				
+	//============ REPOST SESSION CURRENT
+	if(  $this->activeRepost == 1  ) {
+		$iconRepost   = ' iconRepost';
+		$spanRepost   = ' class="repostedSpan"';
+		$textRepost   = $_SESSION['LANG']['reposted'];
+	} else  {
+		$iconRepost   = null;
+		$spanRepost   = null;
+		$textRepost   = $_SESSION['LANG']['repost'];
+	}
+					
+	$widthPhoto = _Function::getWidth( URL_BASE.'upload/'.$this->data->photo ); 
+				
+	if( $widthPhoto > 550 ) {
+		$thumbPic = 'thumb/500-500-';
+	} else {
+		$thumbPic = null;
+	}
+	
+	if( $this->data->mode == 0 
+		&& $this->followingActive->status == 0 
+		&& $_SESSION['authenticated'] 
+		!= $this->data->user_id
+		&& !isset( $_SESSION['id_admon'] )
+	):
+	
+	header('location: '.URL_BASE.$this->data->username );
+	//exit;
+	else:
+	
+?>
+<?php include 'views/inc/header.php'; ?>
+<link rel="canonical" href="<?php echo URL_BASE.$this->data->username.'/status/'.$this->data->id ?>">
+<link href="<?php echo $_layoutParams['root_css']; ?>jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+<style>
+	
+	body
+	{
+		background-position: <?php echo $this->data->bg_position; ?> 55px;
+		background-attachment: <?php echo $this->data->bg_attachment; ?>;
+		
+		<?php if( $this->data->bg_attachment == 'fixed' ): ?>
+		background-repeat: repeat repeat; 
+		<?php else: ?>
+		background-repeat: no-repeat; 
+		<?php endif; ?>
+		
+		background-color: <?php echo $this->data->bg_color; ?>;
+		
+		<?php if( $this->data->bg != '' ): ?>
+		background-image: url(<?php echo URL_BASE.'public/backgrounds/'.$this->data->bg; ?>);
+		<?php endif; ?>
+	}
+	
+	body a,
+	body a:hover { color: <?php echo $this->data->color_link; ?>; }
+	.icons { background-color: <?php echo $this->data->color_link; ?>;}
+	.container_data_profile a:hover span{ color: <?php echo $this->data->color_link; ?>;  }
+	
+</style>
+<link href="<?php echo $_layoutParams['root_css']; ?>colorbox.css" rel="stylesheet" />
+</head>
+	<!-- Body -->
+	<body data-max="<?php echo MAX_LENGTH; ?>" data-accept="<?php echo $_SESSION['LANG']['accept']; ?>" data-cancel="<?php echo $_SESSION['LANG']['cancel']; ?>">
+		<?php include 'views/inc/profile_summary_inc.php'; ?>
+		<!-- warpper_top_bar -->
+		<div class="warpper_top_bar">
+				<!-- inner_top_bar -->
+				<header class="inner_top_bar">
+					<!-- padding_class -->
+					<div class="padding_class">
+						<a href="<?php echo URL_BASE; ?>">
+							<?php include 'views/inc/logo.php'; ?>
+						</a>
+					
+					<?php include 'views/inc/navigation.php'; ?>
+			    </div><!-- padding_class -->
+			</header><!-- inner_top_bar -->
+		</div><!-- warpper_top_bar -->
+	
+	<!-- page -->
+	<div class="page">
+		<!-- layout -->
+		<section class="layout session" style="max-width: 600px;">
+			<div class="popout"></div>
+			<!-- padding_class -->
+		    <div class="padding_class sessionClass">
+		    	<div class="formSearchResp">
+						   <form action="search/" class="formResponsive" method="get" id="search_engine" accept-charset="UTF-8">
+							  <input id="btnItems" name="q" class="mention" type="text" placeholder="<?php echo $_SESSION['LANG']['search_word']; ?>" maxlength="100">	
+						      </form>
+					</div>
+			   
+			   <!-- Grid 2 -->
+			   <div class="grid_2 floatRight" style="width: 100%;">
+			   	
+			   	<!-- nav_profile -->
+		    	<div class="grid_profile">
+		    		<!-- container_profile -->
+				   		<div class="container_profile statusProfile">
+				   			<?php if( isset( $_SESSION['authenticated'] ) ): 
+		    			
+						if( $_SESSION['authenticated'] != $this->data->user_id && $this->checkBlock[0]['status'] == 0  ):
+							?>
+							
+							<?php if ( $this->followingActive->status == 1 ): ?>	
+		    		   		 <span data-follow="<?php echo $_SESSION['LANG']['follow']; ?>" data-unfollow="<?php echo $_SESSION['LANG']['unfollow']; ?>" data-following="<?php echo $_SESSION['LANG']['following']; ?>" data-username="<?php echo $this->data->username; ?>" data-id="<?php echo _Function::randomString( 10, FALSE, TRUE, FALSE ).'-'.$this->data->user_id; ?>" class="followBtn follow_button_status follow_active"><?php echo $_SESSION['LANG']['following']; ?></span>
+		    				<?php else: ?>
+		    				<span data-follow="<?php echo $_SESSION['LANG']['follow']; ?>" data-unfollow="<?php echo $_SESSION['LANG']['unfollow']; ?>" data-following="<?php echo $_SESSION['LANG']['following']; ?>" data-username="<?php echo $this->data->username; ?>" data-id="<?php echo _Function::randomString( 10, FALSE, TRUE, FALSE ).'-'.$this->data->user_id; ?>" class="followBtn follow_button_status"><?php echo $_SESSION['LANG']['follow']; ?></span>
+							<?php endif; //<--- $this->followingActive->status ?>
+						<?php endif; //<---  $_SESSION['authenticated'] != $this->info->id ?>
+		    		
+		    		<?php else: ?>
+		    		<span class="follow_button_status toogle"><?php echo $_SESSION['LANG']['follow']; ?></span>
+		    		<?php endif; //<---- $_SESSION['authenticated'] ?>
+		    		
+				   			<?php echo $spanAbsolute; ?>
+				   			<a href="<?php echo URL_BASE.$this->data->username; ?>">
+				   				<img src="<?php echo URL_BASE.'public/avatar/'.$this->data->avatar; ?>"  class="avatar_large" />
+				   				</a>
+				   			<!-- profile detail -->
+					   			<div class="profile_detail">
+					   				<span class="detail_top" style="padding: 0; border: none;">
+					   					<a href="<?php echo URL_BASE.$this->data->username; ?>">
+					   						<h1><?php echo stripslashes( $this->data->name ); ?></h1> 
+					   					</a>
+					   					
+					   					
+					   					<?php if( $this->data->type_account == '1' ): ?>
+					   					<img title="<?php echo $_SESSION['LANG']['verified']; ?>" class="verified_img west" src="<?php echo URL_BASE; ?>public/img/verified.png"> 
+					   					<?php endif; ?>
+					   				
+					   				</span><!-- detail_top -->
+					   			<ul class="user_data" style="padding: 0;">
+					   				<strong style="color: #999; font-weight: normal; font-size: 14px;">@<?php echo $this->data->username; ?></strong>
+					   			</ul>
+					   				
+					   			</div><!-- profile_detail -->
+					   				
+				   			</div><!-- container_profile -->
+		    	</div><!-- nav_profile -->
+		    	
+		    	<h4 class="statusBar">
+		    	<?php echo _Function::checkText( $this->data->post_details ); 
+		    	
+			   	if( isset( $this->data->video_code ) && $this->data->video_code != '' ) {
+					echo $this->data->video_title.' '. _Function::linkText( $this->data->video_url );
+					
+				}
+				
+				if( isset( $this->data->title_soundcloud ) && $this->data->url_soundcloud != '' ) {
+					echo $this->data->title_soundcloud;
+					
+				}
+			   	?> 
+			   
+			   				 	 	
+			<?php if( $this->data->video_code == 0 && $this->data->url_soundcloud == '' && $this->data->photo != '' && $this->data->post_details == '' ): ?>
+				<a href="<?php echo URL_BASE.'upload/'.$this->data->photo; ?>" data-url="" class="linkImage galeryAjax"><?php echo 'pic.thumb/'.$this->data->photo; ?></a>
+				<?php endif; ?>
+		    	</h4>
+				
+				<?php if( Session::get( 'authenticated' ) ): ?>
+				<div class="spanStatus">
+							<a data-fav="<?php echo $_SESSION['LANG']['favorite']; ?>" data-fav-active="<?php echo $_SESSION['LANG']['favorited']; ?>" class="favorite favoriteIcon" data="<?php echo $this->data->id; ?>" data-token="<?php echo $this->data->token_id; ?>">
+				   					<i class="favorite_ico_large icons<?php echo $iconFav; ?>"></i>
+				   					<span<?php echo $spanFav; ?>><?php echo $textFav; ?></span>
+			   					</a>
+			   					
+			   					<?php if( $_SESSION['authenticated'] == $this->data->user_id ): ?>
+			   					<a data-message="<?php echo $_SESSION['LANG']['delete_post']; ?>" data-confirm="<?php echo $_SESSION['LANG']['confirm']; ?>" class="trashStatus" data="<?php echo $this->data->id; ?>" data-token="<?php echo $this->data->token_id; ?>">
+				   					<i class="trash_ico_large icons"></i>
+				   					<span><?php echo $_SESSION['LANG']['trash']; ?></span>
+			   					</a>
+			   					<?php endif; ?>
+			   					
+			   					<a class="favoriteIcon reply-button" style="line-height: 18px;">
+				   					<i class="reply icons"></i>
+				   					<span><?php echo $_SESSION['LANG']['reply']; ?></span>
+			   					</a>
+			   					
+			   					<!-- REPOST -->
+			   					<?php if( isset( $_SESSION['authenticated'] ) && $this->data->user_id !=  $_SESSION['authenticated'] ): ?>
+			   					<a data-rep="<?php echo $_SESSION['LANG']['repost']; ?>" data-rep-active="<?php echo $_SESSION['LANG']['reposted']; ?>" class="repost_button repostIcon" data="<?php echo $this->data->id; ?>" data-token="<?php echo $this->data->token_id; ?>">
+				   					<i class="repost_ico_large icons <?php echo $iconRepost; ?>"></i>
+				   					<span<?php echo $spanRepost; ?>><?php echo $textRepost; ?></span>
+			   					</a>
+			   					<?php endif; ?>
+			   					
+			   			</div>	
+			   			<?php endif; ?>
+			   			
+			   			<?php if( $this->data->video_site != '' || $this->data->photo != '' || $this->data->url_soundcloud != '' ): ?>
+			   			<div class="spanStatus" style="text-align: center;">		
+			   					<?php if( $this->data->video_site == 'youtube' ): ?>
+			   					<iframe width="550" height="400" src="http://www.youtube.com/embed/<?php echo $this->data->video_code; ?>" frameborder="0" allowfullscreen></iframe>
+			   					<?php endif; ?>
+			   					
+			   					<?php if( $this->data->video_site == 'vimeo' ): ?>
+			   					<iframe src="http://player.vimeo.com/video/<?php echo $this->data->video_code; ?>" width="550" height="400" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+			   					<?php endif; ?>
+			   					
+			   					<?php if( $this->data->photo != '' ): ?>
+			   					<a data-url="" class="galeryAjax" href='<?php echo URL_BASE ?>upload/<?php echo $this->data->photo; ?>'> 
+			   						<img class='photoPost' src='<?php echo URL_BASE.$thumbPic ?>upload/<?php echo $this->data->photo; ?>'> 
+			   						</a>
+			   					<?php endif; ?>
+			   					
+			   				
+			   					<?php if( $this->data->url_soundcloud != '' ): ?>
+			   					<iframe width="100%" height="120" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=<?php echo $this->data->url_soundcloud; ?>"></iframe>
+			   					<?php endif; ?>
+			   					
+			   					
+				        </div>
+				<?php endif;//<<----- != 0 ?>
+				
+				<div class="spanStatus">
+				    <span class="details_report" style="border: none; padding: 0; margin: 0;"> 
+				    	<span class="iDetails"><?php echo date('d/m/Y', strtotime( $this->data->_date ) ) ?></span> 
+				    	
+				    	<?php if(  Session::get( 'authenticated' ) && $_SESSION['authenticated'] != $this->data->user_id ): ?>
+				    	<span class="iReport reportPost" data="<?php echo $this->data->id; ?>" data-token="<?php echo $this->data->token_id; ?>"><a><?php echo $_SESSION['LANG']['report']; ?></a></span>
+				    	<?php endif; ?>
+				    	
+				    	</span>
+				</div>
+					
+ <?php if( $countFavs != 0 ):
+		if( $this->countRepost[0]['totalRepost'] != 0  ) {
+			$repostTotal = " | <strong>".$this->countRepost[0]['totalRepost']."</strong> ".$_SESSION['LANG']['reposted']."";
+		} else {
+			$repostTotal = null;
+		}
+		 ?>
+		<div class="spanStatus">
+		<span class='favorites_user'> 
+			<span class='favs_title'>
+				<strong><?php echo $countFavs; ?></strong> <?php echo $_SESSION['LANG']['favorites']; ?> <?php echo $repostTotal; ?>
+				</span>
+				</span>	
+	   	<?php
+	   	foreach ( $this->favorites as $key ) {
+			?>
+			<a class="south openModal" data-id="<?php echo $key['id']; ?>" title="@<?php echo $key['username']?>" href="<?php echo URL_BASE.$key['username']?>"><img src="<?php echo URL_BASE ?>thumb/24-24-public/avatar/<?php echo $key['avatar']?>" /></a>
+			<?php	   
+		}
+	   	 ?>
+	   	</div>
+<?php endif; ?>
+
+ <?php if( $countFavs == 0 && $this->countRepost[0]['totalRepost'] != 0  ):
+		if( $this->countRepost[0]['totalRepost'] != 0  ) {
+			$repostTotal = "<strong>".$this->countRepost[0]['totalRepost']."</strong> ".$_SESSION['LANG']['reposted']."";
+		} else {
+			$repostTotal = null;
+		}
+		 ?>
+		<div class="spanStatus">
+		<span class='favorites_user'> <span class='favs_title'><?php echo $repostTotal; ?></span></span>
+	   	</div>
+<?php endif; ?>
+				
+	<div class="spanStatus replyStatus" id="reply-status-wrap" style="border: none; padding: 0; margin: 0;">
+<?php if( $this->countReply != 0 ):
+					foreach ( $this->reply as $key ) {
+						//============ VERIFIED
+						if( $key['type_account'] == '1' ) {
+							$verified = ' <img class="verified_img" src="'.URL_BASE.'public/img/verified_min.png">';
+						} else {
+							$verified = null;
+						}
+						if( $_SESSION['authenticated'] == $key['id'] ) {
+							$removeReply = ' <i title="'. $_SESSION['LANG']['delete'] .'" data="'.$key['idReply'].'" class="trash_ico_reply removeReply"></i>';
+						} else {
+							$removeReply = null;
+						}
+						?>
+						
+			<span class="spanReply">
+				<?php echo $removeReply; ?>
+				 <span class="paddingReply">
+				 	<a href="<?php echo URL_BASE.$key['username']; ?>" class="openModal" data-id="<?php echo $key['id']; ?>">
+				 	<img class="avatar_user" src="<?php echo URL_BASE; ?>thumb/30-30-public/avatar/<?php echo $key['avatar']; ?>">
+				 	</a> 
+				 	<span class="replyContainer"> 
+				 		<span class="timestamp timeAgo" data="<?php echo date('c', strtotime( $key['date'] ) ); ?>"></span> 
+				 	<a href="<?php echo URL_BASE.$key['username']; ?>" class="userR openModal" data-id="<?php echo $key['id']; ?>">
+				 		<?php echo $key['name']; ?> <?php echo $verified; ?>
+				 		</a> 
+				 	<strong class="usernameClass">@<?php echo $key['username']; ?></strong> 
+				 	<p><?php echo _Function::checkText( $key['reply'] ); ?></p>
+				 	</span>
+				 	</span>
+				 	</span>
+						<?php
+					}
+					 ?>
+				<?php endif; ?>
+				
+				</div>
+				<?php if( Session::get( 'authenticated' ) ): ?>
+				<span class="spanStatus replyStatus box-class" style="border: none; padding-top: 0;">
+				<div class="grid-reply"> 
+				<form action="" method="post" accept-charset="UTF-8" id="form_reply_post">
+			   					<input type="hidden" name="id_reply" id="id_reply" value="<?php echo $this->data->id; ?>">
+			   					<input type="hidden" name="token_reply" id="token_reply" value="<?php echo $this->data->token_id; ?>">
+			   					<textarea name="reply_post" id="reply_post"></textarea><div class="counter"></div>
+			   					<div class="counter"></div> 
+			   					<button id="button-reply-status" disabled="disabled" style="opacity: 0.5; cursor: default;" type="submit"><?php echo $_SESSION['LANG']['reply']; ?></button> 
+			   					</form>
+			   			</div>	
+			   	</span>
+			 <?php endif; ?>			
+		</div><!-- Grid 2 -->
+		
+		<!-- wrapper_grid -->
+		     <div class="wrapper_grid floatLeft" style="width: 100%; text-align: center; margin-top: 10px;">
+				   
+				    <!-- Grid 1 -->
+				   <div class="grid_1">
+				   		<!-- container_grid -->
+				   		<div class="container_grid about_pages">
+				   			<?php include 'views/inc/footer_session.php'; ?>
+				   		</div><!-- container_grid -->
+				   </div><!-- Grid 1 -->
+				   
+			   </div><!-- wrapper_grid -->
+			   		
+			 </div><!-- padding_class -->
+		</section><!-- layout -->
+	</div><!-- page -->
+
+   
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery-1.7.1.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.easing.1.3.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.placeholder.1.1.1.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery-ui-1.8.17.custom.min.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>functions.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>count.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.form.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>timeago/jqueryTimeago_<?php echo $_SESSION['lang']; ?>.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.colorbox.js"></script>
+   <script src="<?php echo $_layoutParams['root_js']; ?>jquery.scroll.user.js"></script>
+   
+   <?php if( !Session::get( 'authenticated' ) ) : ?>
+   <script src="<?php echo $_layoutParams['root_js']; ?>login.sign.up.js"></script>
+   <?php endif; ?>
+ 	
+  <?php if( Session::get( 'authenticated' ) ) : ?>
+ <script src="<?php echo $_layoutParams['root_js']; ?>mentions.js"></script>
+ <?php endif; ?>
+ 
+ <script type="text/javascript">
+ 
+ $(".galeryAjax").colorbox({
+   	});
+   	
+   jQuery(document).ready(function($) {
+   
+   jQuery("span.timeAgo").timeago();
+   //=== PLACEHOLDER	
+  $(function(){
+      $(':input[placeholder]').placeholder();
+    });
+    
+    $('#reply_post').live('hover', function(){
+		if ($(this).data('hascharcount') == undefined) {
+			$(this).data('hascharcount', true).charCount({ allowed: <?php echo MAX_LENGTH; ?>, warning: 10 });
+		}
+		});
+	
+     
+});//<-------- * DOM * ------>
+
+  </script>
+
+	</body>
+</html>
+  <?php
+   endif;//<-- Profile Private
+else:
+	
+	header ('HTTP/1.0 404 Not Found');
+	include 'public/error/404.php'; // SHOW ERROR 404
+	exit;
+      
+	endif;//<-- COUNT - 0 Result ?>

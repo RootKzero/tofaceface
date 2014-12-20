@@ -1,0 +1,67 @@
+# enable apache modRewrite module #
+RewriteEngine on
+
+AddDefaultCharset utf-8
+
+#Protect - DOS
+LimitRequestBody 10000000
+
+# set files headers
+<IfModule mod_headers.c>
+<FilesMatch "\.(css|js|png|gif|jpg|jpeg|htc)$">
+Header set Cache-Control "max-age=2678400, public, must-revalidate"
+</FilesMatch>
+</IfModule>
+
+<IfModule mod_headers.c>
+<filesMatch "(thumb_resize\.php|thumb_resize_fixed\.php)$">
+Header set Cache-Control "max-age=2678400, must-revalidate"
+</filesMatch>
+</IfModule>
+
+#Options All -Indexes
+Options +SymLinksIfOwnerMatch
+
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+# deflate static content
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/x-component text/css application/x-javascript application/javascript
+</IfModule>
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+ErrorDocument 403 "/public/error/404.php/"
+ErrorDocument 404 "/public/error/404.php/"
+ErrorDocument 406 "/public/error/404.php/"
+
+
+# Pages User
+RewriteRule ^([a-zA-Z0-9-\_\.]+)$ index.php?usr=$1 [QSA,L]
+
+# Pages Search
+RewriteRule ^search/(.+)$ index.php?q=$1 [QSA,L]
+
+# Pages Static
+RewriteRule ^([a-zA-Z0-9-_]+)/$ index.php?page=$1 [QSA,L]
+
+# Pages Status
+RewriteRule ^([a-zA-Z0-9-_]+)/(status)/([0-9]+)$ index.php?usr=$1&action=$2&id_status=$3 [QSA,L]
+
+# Pages User Action
+RewriteRule ^([a-zA-Z0-9-\_\.]+)/(followers|following|favorites|media|info)$ index.php?usr=$1&action=$2 [QSA,L]
+
+#Thumb Resize Images
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^thumb/([a-z0-9-_\.\/]+)$ thumb_resize.php?x=$1 [QSA,L]
+
+#Thumb Resize Images Fixed
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^thumb_fixed/([a-z0-9-_\.\/]+)$ thumb_resize_fixed.php?x=$1 [QSA,L]
+RewriteRule ^public/sitemaps/sitemaps\.xml$ public/sitemaps/sitemaps.php [L]
