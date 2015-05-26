@@ -1,4 +1,5 @@
-tofaceface
-==========
+-------------
 
-Una Red Popular, Sexy ;) y Libre expresion
+Copyright, 2015 by [Jorge Botello](https://twitter.com/jorgbot)
+
+-------------
